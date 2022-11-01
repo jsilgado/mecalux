@@ -1,0 +1,33 @@
+<div class = "bootstrap-wrapper">
+  <div class = "container">
+    <div class = "row" style = "margin-top : 20px;">
+        <mat-card>
+        <form (ngSubmit) = "onSubmit()" #rackForm = "ngForm">
+          <h1 class="text-center">Add rack</h1>
+
+          <mat-form-field class="full-width" appearance="fill">
+            <mat-label>Warehouse</mat-label>
+            <input matInput disabled value="{{data.warehouseId}}">
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Type</mat-label>
+            <mat-select required [(ngModel)]="rack.rackType" name="type">
+              <mat-option *ngFor="let type of rackTypes" [value]="type.value">
+                {{type.viewValue}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <div class = "container text-center">
+            <button mat-raised-button color="primary" [disabled]= "!rackForm.form.valid">Save</button>
+            <button mat-raised-button mat-dialog-close style = "margin-left: 20px;">Cancel</button>
+          </div>
+
+        </form>
+        </mat-card>
+        <br><br><br>
+      </div>
+
+  </div>
+</div>

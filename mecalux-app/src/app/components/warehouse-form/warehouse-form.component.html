@@ -1,0 +1,97 @@
+<div class = "bootstrap-wrapper">
+  <div class = "container">
+    <div class = "row" style = "margin-top : 20px;">
+      <div class = "col-md-6 offset-md-3">
+        <mat-card>
+        <form (ngSubmit) = "onSubmit()" #warehouseForm = "ngForm">
+          <div [innerHtml]="htmlContentHeader"></div>
+
+          <mat-form-field class="full-width" appearance="fill" *ngIf="!isNew">
+            <mat-label>Warehouse</mat-label>
+            <input matInput disabled value="{{warehouse.id}}">
+          </mat-form-field>
+
+          <mat-form-field class="full-width" appearance = "outline">
+            <mat-label>Client </mat-label>
+            <input type="text" [disabled]="isDetail" required [(ngModel)] = "warehouse.client" name = "client" matInput placeholder="Client's name">
+            <mat-error *ngIf="clientFormControl.hasError('required')">
+              Client is required
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field class="full-width" appearance="outline">
+            <mat-label>Type</mat-label>
+            <mat-select [disabled]="isDetail" required [(ngModel)]="warehouse.warehouseFamily" name="type">
+              <mat-option *ngFor="let type of warehouseFamilies" [value]="type.value">
+                {{type.viewValue}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field appearance = "outline">
+            <mat-label>Size </mat-label>
+            <input type="number" [disabled]="isDetail" min="0" required [(ngModel)] = "warehouse.size" name = "size" matInput>
+            <mat-hint>Max numbers of racks</mat-hint>
+            <mat-error *ngIf="sizeFormControl.hasError('required')">
+              Size is required
+            </mat-error>
+          </mat-form-field>
+
+          <div class = "container text-center" *ngIf="!isDetail">
+            <button mat-raised-button color="primary" [disabled]= "!warehouseForm.form.valid">Save</button>
+            <button mat-raised-button (click) = "goToLstWarehouses()" style = "margin-left: 20px;">Cancel</button>
+          </div>
+
+          <div class = "container text-center" *ngIf="isDetail">
+            <button mat-raised-button (click) = "goToLstWarehouses()" style = "margin-left: 20px;">Back</button>
+          </div>
+
+        </form>
+
+        <br>
+        <div *ngIf="isDetail || isUpdate">
+
+          <mat-divider></mat-divider>
+          <br>
+
+          <h1 class="text-center">Racks</h1>
+          <table mat-table [dataSource]="racks">
+
+            <!-- id Column -->
+            <ng-container matColumnDef="id">
+              <th mat-header-cell *matHeaderCellDef> Rack </th>
+              <td mat-cell *matCellDef="let element"> {{element.id}}  </td>
+            </ng-container>
+
+            <!-- Type Column -->
+            <ng-container matColumnDef="type">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Type </th>
+              <td mat-cell *matCellDef="let element"> {{element.rackType}} </td>
+            </ng-container>
+
+            <!-- Actions Column -->
+            <ng-container matColumnDef="actions">
+              <th mat-header-cell  *matHeaderCellDef> Actions </th>
+              <td mat-cell *matCellDef="let element">
+                <div class="button-row" *ngIf="!isDetail">
+                  <button (click) = "deleteRack(element.id)" mat-raised-button color="warn" matTooltip="Delete">Delete</button>
+                </div>
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+          </table>
+          <br>
+          <div class = "container text-center" *ngIf="!isDetail">
+            <button mat-mini-fab color="primary" (click)="openDialog()" matTooltip="Add rack to warehouse">
+              <mat-icon>add</mat-icon>
+            </button>
+          </div>
+        </div>
+
+        </mat-card>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,43 @@
+<mat-toolbar color="primary">
+  <a
+    [routerLink]="'/'"
+    mat-icon-button
+    class="icon"
+    arial-label="icon-button with menu icon"
+  >
+    <mat-icon>warehouse</mat-icon>
+  </a>
+  <span>Mecalux</span>
+  <span class="spacer"></span>
+  <a
+    *ngIf = "!isLoggedIn"
+    [routerLink]="'/login'"
+    mat-icon-button
+    class = "icon favorite-icon"
+    aria-label = "icon-button with heart icon"
+  >
+    Login
+  </a>
+  <a
+    *ngIf = "isLoggedIn"
+    (click) = "logout()"
+    style="margin-right: 50px"
+    mat-icon-button
+    class="icon favorite-icon"
+    aria-label="icon-button with heart icon"
+  >
+    Logout
+  </a>
+  <button
+
+    mat-button
+    style="margin-right: 10px"
+    class="icon favorite-icon"
+    aria-label="icon-button with heart icon"
+  >
+  <div *ngIf="user">
+    {{ user.name }} {{ user.surname }} ({{ user.authorities[0].authority}})
+  </div>
+
+  </button>
+</mat-toolbar>
