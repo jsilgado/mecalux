@@ -1,0 +1,26 @@
+version: '1.0'
+
+services:
+
+  backendserver:
+    container_name: warehouse_rest
+    build: ./warehouse_rest/
+    environment:
+      - TZ=Europe/Madrid
+      - CLIENT_URL=http://$IP
+     # - JWT_SECRET=your-secret-key #Secret key for JWT tokens
+    ports:
+      - "8080:8080"
+    restart: always
+
+  frontend:
+    container_name: mecalux_app
+    build:
+      context: ./mecalux_app/
+      args:
+        - apiURL=http://$IP:8080
+    ports:
+      - "80:80"
+    environment:
+      - TZ=Europe/Madrid
+    restart: always
