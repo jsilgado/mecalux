@@ -4,10 +4,6 @@ server:
   error:
     include-stacktrace: never
 
-#CrossOrigins
-client:
- url: http://localhost:4200
-
 spring:
   application:
     name: warehouse-rest
