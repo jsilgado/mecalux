@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.v3.oas.annotations.Operation;
 import jsilgado.mecalux.persistence.entity.User;
-import jsilgado.mecalux.security.JWTAuthResponseDTO;
+import jsilgado.mecalux.security.JwtAuthResponseDTO;
 import jsilgado.mecalux.security.JwtTokenProvider;
 import jsilgado.mecalux.service.UserDetailsServiceImpl;
 import jsilgado.mecalux.service.dto.LoginDTO;
@@ -40,14 +40,14 @@ public class AuthControlller {
 	@Operation(summary = "Login", description = "Check if the username and password are valid. Return token", tags = {
 			"AuthControlller" })
 	@PostMapping("/login")
-	public ResponseEntity<JWTAuthResponseDTO> authenticateUser(@Valid @RequestBody LoginDTO loginDTO) {
+	public ResponseEntity<JwtAuthResponseDTO> authenticateUser(@Valid @RequestBody LoginDTO loginDTO) {
 
 		Authentication autenticar = authentication(loginDTO.getUsername(), loginDTO.getPassword());
 
 		// obtenemos el token del jwtTokenProvider
 		String token = jwtTokenProvider.generateToken(autenticar);
 
-		return ResponseEntity.ok(new JWTAuthResponseDTO(token));
+		return ResponseEntity.ok(new JwtAuthResponseDTO(token));
 	}
 
 	private Authentication authentication(String username, String password) {

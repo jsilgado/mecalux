@@ -3,12 +3,12 @@ package jsilgado.mecalux.security;
 import lombok.Data;
 
 @Data
-public class JWTAuthResponseDTO {
+public class JwtAuthResponseDTO {
 
 	private String tokenAcess;
 	private String tokenType = "Bearer";
 
-	public JWTAuthResponseDTO(String tokenAcess) {
+	public JwtAuthResponseDTO(String tokenAcess) {
 		super();
 		this.tokenAcess = tokenAcess;
 	}

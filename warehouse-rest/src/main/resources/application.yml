@@ -1,3 +1,9 @@
+#Server
+server:
+  port: 8080
+  error:
+    include-stacktrace: never
+
 #CrossOrigins
 client:
  url: http://localhost:4200
@@ -5,6 +11,7 @@ client:
 spring:
   application:
     name: warehouse-rest
+    zipkin: http://localhost:9411
   datasource:
     driver-class-name: org.h2.Driver
     username: a
@@ -20,8 +27,12 @@ spring:
     defer-datasource-initialization: true
     hibernate:
       ddl-auto: create-drop
+  
       
 #jwt
 app:
+ security:
+   enabled: true
+ timeZone: 
  jwt-secret: JWTSecretKey
  jwt-expiration-milliseconds: 604800000
