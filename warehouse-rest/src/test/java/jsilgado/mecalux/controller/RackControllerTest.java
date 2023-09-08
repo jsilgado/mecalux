@@ -34,6 +34,7 @@ import jsilgado.mecalux.service.RackService;
 import jsilgado.mecalux.service.dto.RackDTO;
 import jsilgado.mecalux.service.dto.RackInDTO;
 import jsilgado.mecalux.service.mapper.RackToRackDTO;
+import net.datafaker.Faker;
 
 
 /**
@@ -81,6 +82,7 @@ class RackControllerTest {
     @BeforeEach
     public void setUp() {
         MockitoAnnotations.openMocks(this);
+        Faker faker = new Faker();
 
         objectMapper = new ObjectMapper();
 
@@ -88,8 +90,8 @@ class RackControllerTest {
 
         warehouse = new Warehouse();
         warehouse.setId(randomUUID);
-        warehouse.setClient("Mecalux");
-        warehouse.setSize(2);
+        warehouse.setClient(faker.chiquito().expressions());
+        warehouse.setSize(faker.number().numberBetween(1, 9));
         warehouse.setWarehouseFamily(WarehouseFamilies.EST);
 
         rack = new Rack();
