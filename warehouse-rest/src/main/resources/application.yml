@@ -25,3 +25,11 @@ spring:
 app:
  jwt-secret: JWTSecretKey
  jwt-expiration-milliseconds: 604800000
+ 
+#actuator 
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+        exclude: "env,beans" 
