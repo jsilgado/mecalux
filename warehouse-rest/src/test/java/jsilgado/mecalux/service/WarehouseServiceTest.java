@@ -21,6 +21,7 @@ import jsilgado.mecalux.persistence.entity.Warehouse;
 import jsilgado.mecalux.persistence.entity.WarehouseFamilies;
 import jsilgado.mecalux.persistence.repository.WarehouseRepository;
 import jsilgado.mecalux.service.dto.WarehouseInDTO;
+import net.datafaker.Faker;
 
 
 /**
@@ -54,14 +55,15 @@ class WarehouseServiceTest {
     @BeforeEach
     public void setUp() {
         MockitoAnnotations.openMocks(this);
+        Faker faker = new Faker();
 
         warehouse = new Warehouse();
         warehouse.setId(UUID.randomUUID());
-        warehouse.setSize(2);
+        warehouse.setSize(faker.number().numberBetween(1, 9));
         warehouse.setWarehouseFamily(WarehouseFamilies.EST);
 
         warehouseInDTO = new WarehouseInDTO();
-        warehouseInDTO.setSize(2);
+        warehouseInDTO.setSize(faker.number().numberBetween(1, 9));
         warehouseInDTO.setWarehouseFamily(WarehouseFamilies.EST);
 
     	lstWarehouse = new ArrayList<>();

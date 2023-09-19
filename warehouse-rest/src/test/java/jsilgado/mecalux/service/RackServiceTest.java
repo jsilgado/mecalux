@@ -28,6 +28,7 @@ import jsilgado.mecalux.persistence.repository.RackRepository;
 import jsilgado.mecalux.persistence.repository.WarehouseRepository;
 import jsilgado.mecalux.service.dto.RackInDTO;
 import jsilgado.mecalux.service.mapper.RackInDTOToRack;
+import net.datafaker.Faker;
 
 /**
  * Test RackServiceTest
@@ -42,7 +43,7 @@ class RackServiceTest {
 
 	@Mock
 	private RackInDTOToRack rackInDTOToRack;
-
+	
 	/**
 	 * Servicio
 	 */
@@ -63,13 +64,14 @@ class RackServiceTest {
 	@BeforeEach
 	public void setUp() {
 		MockitoAnnotations.openMocks(this);
+		Faker faker = new Faker();
 
 		rack = new Rack();
 		rack.setId(UUID.randomUUID());
 
 		warehouse = new Warehouse();
 		warehouse.setId(UUID.randomUUID());
-		warehouse.setSize(1);
+		warehouse.setSize(faker.number().numberBetween(1, 9));
 		warehouse.setWarehouseFamily(WarehouseFamilies.EST);
 
 		rackInDTO = new RackInDTO();
