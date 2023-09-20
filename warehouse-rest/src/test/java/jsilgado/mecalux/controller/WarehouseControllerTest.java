@@ -27,6 +27,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import jsilgado.mecalux.mapper.WarehouseMapper;
 import jsilgado.mecalux.persistence.entity.Warehouse;
 import jsilgado.mecalux.persistence.entity.WarehouseFamilies;
 import jsilgado.mecalux.security.JwtAuthenticationEntryPoint;
@@ -34,7 +35,6 @@ import jsilgado.mecalux.security.JwtTokenProvider;
 import jsilgado.mecalux.service.WarehouseService;
 import jsilgado.mecalux.service.dto.WarehouseDTO;
 import jsilgado.mecalux.service.dto.WarehouseInDTO;
-import jsilgado.mecalux.service.mapper.WarehouseToWarehouseDTO;
 
 
 /**
@@ -58,10 +58,9 @@ class WarehouseControllerTest {
 
 	@MockBean
 	private UserDetailsService userDetailsService;
-
-
+	
 	@MockBean
-	private WarehouseToWarehouseDTO warehouseToWarehouseDTO;
+	private WarehouseMapper warehouseMapper;
 
 
 	ObjectMapper objectMapper;
@@ -112,7 +111,7 @@ class WarehouseControllerTest {
 
 		when(warehouseService.insert(Mockito.any(WarehouseInDTO.class))).thenReturn(warehouse);
 
-		when(warehouseToWarehouseDTO.map(warehouse)).thenReturn(warehouseDTO);
+	    when(warehouseMapper.warehouseToWarehouseDTO(warehouse)).thenReturn(warehouseDTO);
 
 		String writeValueAsString = objectMapper.writeValueAsString(warehouseInDTO);
 
@@ -198,7 +197,7 @@ class WarehouseControllerTest {
 	@Test
 	void findAll_notFound() throws Exception {
 
-		when(warehouseToWarehouseDTO.map(Mockito.anyList())).thenReturn(null);
+		when(warehouseMapper.warehouseToWarehouseDTO(Mockito.anyList())).thenReturn(null);
 
 		mockMvc.perform(get("/warehouses").contentType(MediaType.APPLICATION_JSON))
 		.andExpect(status().isNotFound());
@@ -212,7 +211,7 @@ class WarehouseControllerTest {
 
 		when(warehouseService.getById(UUID.fromString("f8c3de3d-1fea-4d7c-a8b0-29f63c4c3454"))).thenReturn(warehouse);
 
-		when(warehouseToWarehouseDTO.map(warehouse)).thenReturn(warehouseDTO);
+		when(warehouseMapper.warehouseToWarehouseDTO(warehouse)).thenReturn(warehouseDTO);
 
 		mockMvc.perform(get("/warehouses/f8c3de3d-1fea-4d7c-a8b0-29f63c4c3454").contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk())
 				.andExpect(content().contentType(MediaType.APPLICATION_JSON))

@@ -24,6 +24,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import jsilgado.mecalux.exception.ResourceNotFoundException;
 import jsilgado.mecalux.exception.ServiceException;
+import jsilgado.mecalux.mapper.RackMapper;
 import jsilgado.mecalux.persistence.entity.Rack;
 import jsilgado.mecalux.persistence.entity.RackTypes;
 import jsilgado.mecalux.persistence.entity.Warehouse;
@@ -33,7 +34,6 @@ import jsilgado.mecalux.security.JwtTokenProvider;
 import jsilgado.mecalux.service.RackService;
 import jsilgado.mecalux.service.dto.RackDTO;
 import jsilgado.mecalux.service.dto.RackInDTO;
-import jsilgado.mecalux.service.mapper.RackToRackDTO;
 import net.datafaker.Faker;
 
 
@@ -51,7 +51,7 @@ class RackControllerTest {
 	private RackService rackService;
 
 	@MockBean
-	private RackToRackDTO rackToRackDTO;
+	private RackMapper rackMapper;
 
 	@MockBean
 	private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
@@ -113,7 +113,7 @@ class RackControllerTest {
 
 		when(rackService.insert(Mockito.any(UUID.class), Mockito.any(RackInDTO.class))).thenReturn(rack);
 
-		when(rackToRackDTO.map(rack)).thenReturn(rackDTO);
+		when(rackMapper.rackToRackDTO(rack)).thenReturn(rackDTO);
 
 		String writeValueAsString = objectMapper.writeValueAsString(rackInDTO);
 
