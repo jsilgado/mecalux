@@ -19,20 +19,23 @@ import org.springframework.web.bind.annotation.RestController;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import jsilgado.mecalux.mapper.RackMapper;
 import jsilgado.mecalux.persistence.entity.Rack;
 import jsilgado.mecalux.service.RackService;
 import jsilgado.mecalux.service.dto.RackDTO;
 import jsilgado.mecalux.service.dto.RackInDTO;
-import jsilgado.mecalux.util.ObjectMapperUtils;
 
 @RestController
 @RequestMapping("/racks")
 public class RackController {
 
 	private final RackService rackService;
+	
+	private final RackMapper rackMapper;
 
-	public RackController(RackService rackService) {
+	public RackController(RackService rackService, RackMapper rackMapper) {
 		this.rackService = rackService;
+		this.rackMapper = rackMapper;
 	}
 
 
@@ -43,7 +46,7 @@ public class RackController {
 
 		Rack rask = rackService.insert(warehouseId, raskInDTO);
 
-		RackDTO raskDTO = ObjectMapperUtils.map(rask, RackDTO.class);
+		RackDTO raskDTO = rackMapper.rackToRackDTO(rask);
 
 		return new ResponseEntity<>(raskDTO, HttpStatus.CREATED);
 	}
@@ -56,7 +59,7 @@ public class RackController {
 
 		List<Rack> lstRack = rackService.findByWarehouse(warehouseId);
 
-		List<RackDTO> lstRackDTO = ObjectMapperUtils.mapAll(lstRack, RackDTO.class);
+		List<RackDTO> lstRackDTO = rackMapper.rackToRackDTO(lstRack);
 
 		return new ResponseEntity<>(lstRackDTO, HttpStatus.OK);
 	}

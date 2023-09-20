@@ -20,6 +20,7 @@ import org.mockito.MockitoAnnotations;
 
 import jsilgado.mecalux.exception.ResourceNotFoundException;
 import jsilgado.mecalux.exception.ServiceException;
+import jsilgado.mecalux.mapper.RackMapper;
 import jsilgado.mecalux.persistence.entity.Rack;
 import jsilgado.mecalux.persistence.entity.RackTypes;
 import jsilgado.mecalux.persistence.entity.Warehouse;
@@ -27,7 +28,6 @@ import jsilgado.mecalux.persistence.entity.WarehouseFamilies;
 import jsilgado.mecalux.persistence.repository.RackRepository;
 import jsilgado.mecalux.persistence.repository.WarehouseRepository;
 import jsilgado.mecalux.service.dto.RackInDTO;
-import jsilgado.mecalux.service.mapper.RackInDTOToRack;
 import net.datafaker.Faker;
 
 /**
@@ -42,7 +42,7 @@ class RackServiceTest {
 	private WarehouseRepository warehouseRepository;
 
 	@Mock
-	private RackInDTOToRack rackInDTOToRack;
+	private RackMapper rackMapper;
 	
 	/**
 	 * Servicio
@@ -88,7 +88,7 @@ class RackServiceTest {
 
 		when(rackRepository.countByWarehouse(Mockito.any(UUID.class))).thenReturn(0L);
 
-		when(rackInDTOToRack.map(rackInDTO)).thenReturn(rack);
+		when(rackMapper.rackInDTOToRack(rackInDTO)).thenReturn(rack);
 
 		when(rackRepository.save(rack)).thenReturn(rack);
 
@@ -121,7 +121,7 @@ class RackServiceTest {
 
 		when(rackRepository.countByWarehouse(Mockito.any(UUID.class))).thenReturn(999L);
 
-		when(rackInDTOToRack.map(rackInDTO)).thenReturn(rack);
+		when(rackMapper.rackInDTOToRack(rackInDTO)).thenReturn(rack);
 
 		when(rackRepository.save(rack)).thenReturn(rack);
 

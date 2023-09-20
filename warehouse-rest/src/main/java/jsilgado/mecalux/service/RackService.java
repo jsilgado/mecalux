@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import jsilgado.mecalux.exception.ResourceNotFoundException;
 import jsilgado.mecalux.exception.ServiceException;
+import jsilgado.mecalux.mapper.RackMapper;
 import jsilgado.mecalux.model.warehouse.WarehouseFactory;
 import jsilgado.mecalux.model.warehouse.WarehouseModel;
 import jsilgado.mecalux.persistence.entity.Rack;
@@ -17,7 +18,6 @@ import jsilgado.mecalux.persistence.entity.Warehouse;
 import jsilgado.mecalux.persistence.repository.RackRepository;
 import jsilgado.mecalux.persistence.repository.WarehouseRepository;
 import jsilgado.mecalux.service.dto.RackInDTO;
-import jsilgado.mecalux.service.mapper.RackInDTOToRack;
 
 @Service
 public class RackService{
@@ -25,15 +25,13 @@ public class RackService{
 	private final RackRepository rackrepository;
 
 	private final WarehouseRepository warehouseRepository;
+	
+	private final RackMapper rackmapper;
 
-	private final RackInDTOToRack rackInDTOToRack;
-
-
-
-	public RackService(RackRepository rackrepository, WarehouseRepository warehouseRepository, RackInDTOToRack rackInDTOToRack) {
+	public RackService(RackRepository rackrepository, WarehouseRepository warehouseRepository, RackMapper rackmapper) {
 		this.rackrepository = rackrepository;
 		this.warehouseRepository = warehouseRepository;
-		this.rackInDTOToRack = rackInDTOToRack;
+		this.rackmapper = rackmapper;
 
 	}
 
@@ -48,7 +46,7 @@ public class RackService{
 		WarehouseModel warehouseModel = WarehouseFactory.getWarehouse(warehouse.getWarehouseFamily());
 		warehouseModel.validateRackInWarehouse(i.getRackType());
 
-		Rack rask = rackInDTOToRack.map(i);
+		Rack rask = rackmapper.rackInDTOToRack(i);
 		rask.setWarehouse(warehouse);
 
 		rask = rackrepository.save(rask);
