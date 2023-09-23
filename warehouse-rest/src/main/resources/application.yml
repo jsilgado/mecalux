@@ -26,6 +26,17 @@ app:
  jwt-secret: JWTSecretKey
  jwt-expiration-milliseconds: 604800000
  
+#swagger
+springdoc:
+  swagger-ui:
+    enable-auth: true
+    auth-scheme: bearer
+    display-request-duration: true
+    disable-swagger-default-url: true
+    tags-sorter: alpha
+    operations-sorter: alpha
+    
+ 
 #actuator 
 management:
   endpoints:
