@@ -36,7 +36,7 @@ public class Warehouse {
 	@Enumerated(value = EnumType.STRING)
 	private WarehouseFamilies warehouseFamily;
 
-	@Column(name = "size", nullable = false, columnDefinition = "NUMBER(10)")
+	@Column(name = "size", nullable = false)
 	private Integer size;
 
 	@OneToMany(mappedBy = "warehouse", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
