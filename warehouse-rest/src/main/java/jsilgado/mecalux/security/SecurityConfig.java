@@ -74,7 +74,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	    	.antMatchers(AUTH_WHITELIST).permitAll()
 	    	.antMatchers("/auth/**").permitAll()
 	    	.antMatchers(HttpMethod.GET, "/warehouses/rackspermutations/*").permitAll()
-	    	.antMatchers(HttpMethod.GET, "/warehouses/**").authenticated()
+	    	.antMatchers(HttpMethod.GET, "/warehouses/**").permitAll()
 	    	.antMatchers(HttpMethod.POST, "/**").authenticated()
 		    .antMatchers(HttpMethod.PUT, "/**").authenticated()
 		    .antMatchers(HttpMethod.DELETE, "/**").authenticated();

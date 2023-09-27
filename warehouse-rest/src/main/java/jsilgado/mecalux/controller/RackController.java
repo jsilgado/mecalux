@@ -19,8 +19,6 @@ import org.springframework.web.bind.annotation.RestController;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
-import jsilgado.mecalux.mapper.RackMapper;
-import jsilgado.mecalux.persistence.entity.Rack;
 import jsilgado.mecalux.service.RackService;
 import jsilgado.mecalux.service.dto.RackDTO;
 import jsilgado.mecalux.service.dto.RackInDTO;
@@ -30,12 +28,9 @@ import jsilgado.mecalux.service.dto.RackInDTO;
 public class RackController {
 
 	private final RackService rackService;
-	
-	private final RackMapper rackMapper;
 
-	public RackController(RackService rackService, RackMapper rackMapper) {
+	public RackController(RackService rackService) {
 		this.rackService = rackService;
-		this.rackMapper = rackMapper;
 	}
 
 
@@ -44,11 +39,9 @@ public class RackController {
 	@PostMapping("/warehouse/{warehouseId}")
 	public ResponseEntity<RackDTO> create(@PathVariable(value = "warehouseId") UUID warehouseId, @Valid @RequestBody RackInDTO raskInDTO){
 
-		Rack rask = rackService.insert(warehouseId, raskInDTO);
+		RackDTO rackDTO = rackService.insert(warehouseId, raskInDTO);
 
-		RackDTO raskDTO = rackMapper.rackToRackDTO(rask);
-
-		return new ResponseEntity<>(raskDTO, HttpStatus.CREATED);
+		return new ResponseEntity<>(rackDTO, HttpStatus.CREATED);
 	}
 
 	@Operation(summary = "Find racks by warehouse", description = "Find all racks from a warehouse", tags = { "RackController" })
@@ -57,9 +50,7 @@ public class RackController {
 			@Parameter(description="Warehouse id", required = true, example="3fa85f64-5717-4562-b3fc-2c963f66afa6", in = ParameterIn.PATH)
 			@PathVariable(value = "warehouseId") UUID warehouseId){
 
-		List<Rack> lstRack = rackService.findByWarehouse(warehouseId);
-
-		List<RackDTO> lstRackDTO = rackMapper.rackToRackDTO(lstRack);
+		List<RackDTO> lstRackDTO = rackService.findByWarehouse(warehouseId);
 
 		return new ResponseEntity<>(lstRackDTO, HttpStatus.OK);
 	}

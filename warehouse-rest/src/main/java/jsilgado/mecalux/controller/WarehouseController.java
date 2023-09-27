@@ -22,8 +22,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import jsilgado.mecalux.exception.ResourceNotFoundException;
-import jsilgado.mecalux.mapper.WarehouseMapper;
-import jsilgado.mecalux.persistence.entity.Warehouse;
 import jsilgado.mecalux.service.WarehouseService;
 import jsilgado.mecalux.service.dto.WarehouseDTO;
 import jsilgado.mecalux.service.dto.WarehouseInDTO;
@@ -34,11 +32,8 @@ public class WarehouseController {
 
 	private final WarehouseService warehouseService;
 
-	private final WarehouseMapper warehouseMapper;
-
-	public WarehouseController(WarehouseService warehouseService, WarehouseMapper warehouseMapper) {
+	public WarehouseController(WarehouseService warehouseService) {
 		this.warehouseService = warehouseService;
-		this.warehouseMapper = warehouseMapper;
 	}
 
 	@Operation(summary = "Warehouse create", description = "Creation of a warehouse", tags = { "WarehouseController" })
@@ -46,10 +41,8 @@ public class WarehouseController {
 	@PostMapping
 	public ResponseEntity<WarehouseDTO> create(@Valid @RequestBody WarehouseInDTO warehouseInDTO) {
 
-		Warehouse warehouse = warehouseService.insert(warehouseInDTO);
+		WarehouseDTO warehouseDTO = warehouseService.insert(warehouseInDTO);
 		
-		WarehouseDTO warehouseDTO = warehouseMapper.warehouseToWarehouseDTO(warehouse);
-
 		return new ResponseEntity<>(warehouseDTO, HttpStatus.CREATED);
 
 	}
@@ -58,7 +51,7 @@ public class WarehouseController {
 	@GetMapping
 	public ResponseEntity<List<WarehouseDTO>> findAll() {
 
-		return Optional.ofNullable(warehouseMapper.warehouseToWarehouseDTO(warehouseService.getAll()))
+		return Optional.ofNullable(warehouseService.getAll())
 				.map(lst -> ResponseEntity.ok().body(lst)) // 200 OK
 				.orElseGet(() -> ResponseEntity.notFound().build()); // 404 Not found
 	}
@@ -69,10 +62,10 @@ public class WarehouseController {
 			@Parameter(description="Warehouse id", required = true, example="3fa85f64-5717-4562-b3fc-2c963f66afa6", in = ParameterIn.PATH)
 			@PathVariable(value = "id") UUID id) {
 
-		Warehouse warehouse = warehouseService.getById(id);
+		WarehouseDTO warehouseDTO = warehouseService.getById(id);
 
-		return Optional.ofNullable(warehouse)
-				.map(dto -> ResponseEntity.ok().body(warehouseMapper.warehouseToWarehouseDTO(dto))) // 200 OK
+		return Optional.ofNullable(warehouseDTO)
+				.map(dto -> ResponseEntity.ok().body(dto)) // 200 OK
 				.orElseThrow(() -> new ResourceNotFoundException("UUID Not Found")); // 404 Not found
 	}
 
@@ -82,16 +75,16 @@ public class WarehouseController {
 	public ResponseEntity<WarehouseDTO> update(@PathVariable(value = "id") UUID id,
 			@Valid @RequestBody WarehouseInDTO warehouseInDTO) {
 
-		Warehouse warehouse = Optional.ofNullable(warehouseService.getById(id))
+		WarehouseDTO warehouseDTO = Optional.ofNullable(warehouseService.getById(id))
 				.orElseThrow(() -> new ResourceNotFoundException("UUID Not Found")); // 404 Not found
 
-		warehouse.setClient(warehouseInDTO.getClient());
-		warehouse.setSize(warehouseInDTO.getSize());
-		warehouse.setWarehouseFamily(warehouseInDTO.getWarehouseFamily());
+		warehouseDTO.setClient(warehouseInDTO.getClient());
+		warehouseDTO.setSize(warehouseInDTO.getSize());
+		warehouseDTO.setWarehouseFamily(warehouseInDTO.getWarehouseFamily());
 
-		warehouseService.update(warehouse);
+		warehouseService.update(warehouseDTO);
 
-		return ResponseEntity.ok().body(warehouseMapper.warehouseToWarehouseDTO(warehouse)); // 200 OK
+		return ResponseEntity.ok().body(warehouseDTO); // 200 OK
 	}
 
 

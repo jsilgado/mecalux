@@ -25,7 +25,7 @@ import jsilgado.mecalux.persistence.entity.Rack;
 @DataJpaTest
 @TestPropertySource(locations = "classpath:test.properties")
 @AutoConfigureTestDatabase(replace = Replace.NONE)
-@Sql({ "/dataTest.sql" }) 	
+@Sql({ "/dataTest.sql" })
 class RackRepositoryTest {
 
 
