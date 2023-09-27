@@ -13,10 +13,11 @@ import java.util.UUID;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
+import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import jsilgado.mecalux.exception.ResourceNotFoundException;
 import jsilgado.mecalux.exception.ServiceException;
@@ -27,12 +28,15 @@ import jsilgado.mecalux.persistence.entity.Warehouse;
 import jsilgado.mecalux.persistence.entity.WarehouseFamilies;
 import jsilgado.mecalux.persistence.repository.RackRepository;
 import jsilgado.mecalux.persistence.repository.WarehouseRepository;
+import jsilgado.mecalux.service.dto.RackDTO;
 import jsilgado.mecalux.service.dto.RackInDTO;
+import jsilgado.mecalux.service.impl.RackServiceImpl;
 import net.datafaker.Faker;
 
 /**
  * Test RackServiceTest
  */
+@RunWith(MockitoJUnitRunner.class)
 class RackServiceTest {
 
 	@Mock
@@ -47,27 +51,34 @@ class RackServiceTest {
 	/**
 	 * Servicio
 	 */
-	@InjectMocks
 	private RackService service;
 
 	private RackInDTO rackInDTO;
-
+	
+	private RackDTO rackDTO;
+	
 	private Rack rack;
 
 	private Warehouse warehouse;
 
 	private List<Rack> lstRack;
-
+	
+	private List<RackDTO> lstRackDTO;
+	
 	/**
 	 * Inicialización antes de empezar los test
 	 */
 	@BeforeEach
 	public void setUp() {
 		MockitoAnnotations.openMocks(this);
+		service = new RackServiceImpl(rackRepository, warehouseRepository, rackMapper);
 		Faker faker = new Faker();
 
 		rack = new Rack();
 		rack.setId(UUID.randomUUID());
+		
+		rackDTO = new RackDTO();
+		rackDTO.setId(UUID.randomUUID());
 
 		warehouse = new Warehouse();
 		warehouse.setId(UUID.randomUUID());
@@ -79,6 +90,9 @@ class RackServiceTest {
 
 		lstRack = new ArrayList<>();
 		lstRack.add(rack);
+		
+		lstRackDTO = new ArrayList<>();
+		lstRackDTO.add(rackDTO);
 	}
 
 	@Test
@@ -89,12 +103,14 @@ class RackServiceTest {
 		when(rackRepository.countByWarehouse(Mockito.any(UUID.class))).thenReturn(0L);
 
 		when(rackMapper.rackInDTOToRack(rackInDTO)).thenReturn(rack);
+		
+		when(rackMapper.rackToRackDTO(rack)).thenReturn(rackDTO);
 
 		when(rackRepository.save(rack)).thenReturn(rack);
 
-		rack = service.insert(UUID.randomUUID(), rackInDTO);
+		rackDTO = service.insert(UUID.randomUUID(), rackInDTO);
 
-		assertNotNull(rack.getId());
+		assertNotNull(rackDTO.getId());
 
 	}
 
@@ -181,10 +197,12 @@ class RackServiceTest {
 		when(warehouseRepository.findById(Mockito.any(UUID.class))).thenReturn(Optional.of(warehouse));
 
 		when(rackRepository.findByWarehouse(Mockito.any(UUID.class))).thenReturn(lstRack);
+		
+		when(rackMapper.rackToRackDTO(lstRack)).thenReturn(lstRackDTO);
 
-		List<Rack> lstRacks = service.findByWarehouse(UUID.randomUUID());
+		List<RackDTO> lstRackDTO = service.findByWarehouse(UUID.randomUUID());
 
-		assertFalse(lstRacks.isEmpty());
+		assertFalse(lstRackDTO.isEmpty());
 
 	}
 

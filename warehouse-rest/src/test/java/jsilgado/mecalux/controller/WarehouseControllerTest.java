@@ -27,7 +27,6 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import jsilgado.mecalux.mapper.WarehouseMapper;
 import jsilgado.mecalux.persistence.entity.Warehouse;
 import jsilgado.mecalux.persistence.entity.WarehouseFamilies;
 import jsilgado.mecalux.security.JwtAuthenticationEntryPoint;
@@ -58,10 +57,6 @@ class WarehouseControllerTest {
 
 	@MockBean
 	private UserDetailsService userDetailsService;
-	
-	@MockBean
-	private WarehouseMapper warehouseMapper;
-
 
 	ObjectMapper objectMapper;
 
@@ -72,8 +67,9 @@ class WarehouseControllerTest {
 
     private WarehouseDTO warehouseDTO;
 
-
     private List<Warehouse> lstWarehouse;
+    
+    private List<WarehouseDTO> lstWarehouseDTO;
 
 
     /**
@@ -104,16 +100,17 @@ class WarehouseControllerTest {
 
         lstWarehouse = new ArrayList<>();
         lstWarehouse.add(warehouse);
+        
+        lstWarehouseDTO = new ArrayList<>();
+        lstWarehouseDTO.add(warehouseDTO);
     }
 
 	@Test
 	void create_ok() throws Exception {
 
-		when(warehouseService.insert(Mockito.any(WarehouseInDTO.class))).thenReturn(warehouse);
+		when(warehouseService.insert(Mockito.any(WarehouseInDTO.class))).thenReturn(warehouseDTO);
 
-	    when(warehouseMapper.warehouseToWarehouseDTO(warehouse)).thenReturn(warehouseDTO);
-
-		String writeValueAsString = objectMapper.writeValueAsString(warehouseInDTO);
+	    String writeValueAsString = objectMapper.writeValueAsString(warehouseInDTO);
 
 		mockMvc.perform(post("/warehouses").contentType(MediaType.APPLICATION_JSON).content(writeValueAsString))
 			.andExpect(status().isCreated())
@@ -185,7 +182,7 @@ class WarehouseControllerTest {
 	@Test
 	void findAll_ok() throws Exception {
 
-		when(warehouseService.getAll()).thenReturn(lstWarehouse);
+		when(warehouseService.getAll()).thenReturn(lstWarehouseDTO);
 
 		mockMvc.perform(get("/warehouses").contentType(MediaType.APPLICATION_JSON))
 		.andExpect(status().isOk())
@@ -197,8 +194,8 @@ class WarehouseControllerTest {
 	@Test
 	void findAll_notFound() throws Exception {
 
-		when(warehouseMapper.warehouseToWarehouseDTO(Mockito.anyList())).thenReturn(null);
-
+		when(warehouseService.getAll()).thenReturn(null);
+		
 		mockMvc.perform(get("/warehouses").contentType(MediaType.APPLICATION_JSON))
 		.andExpect(status().isNotFound());
 
@@ -209,9 +206,7 @@ class WarehouseControllerTest {
 	@Test
 	void findById_ok() throws Exception {
 
-		when(warehouseService.getById(UUID.fromString("f8c3de3d-1fea-4d7c-a8b0-29f63c4c3454"))).thenReturn(warehouse);
-
-		when(warehouseMapper.warehouseToWarehouseDTO(warehouse)).thenReturn(warehouseDTO);
+		when(warehouseService.getById(UUID.fromString("f8c3de3d-1fea-4d7c-a8b0-29f63c4c3454"))).thenReturn(warehouseDTO);
 
 		mockMvc.perform(get("/warehouses/f8c3de3d-1fea-4d7c-a8b0-29f63c4c3454").contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk())
 				.andExpect(content().contentType(MediaType.APPLICATION_JSON))

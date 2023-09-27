@@ -15,5 +15,9 @@ public class WarehouseDTO {
 	private String client;
 
 	private Integer size;
+	
+	private String cdCountry;
+	
+	private String dsCountry;
 
 }

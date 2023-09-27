@@ -15,6 +15,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Type;
 
 import lombok.Data;
 
@@ -27,6 +28,7 @@ public class Warehouse {
 	@GeneratedValue(generator = "uuid2")
 	@GenericGenerator(name = "uuid2", strategy = "uuid2" )
 	@Column(name = "id", updatable = false, nullable = false, columnDefinition = "VARCHAR(36)")
+	@Type(type="org.hibernate.type.UUIDCharType")
 	private UUID id;
 
 	@Column(name = "client", nullable = false, columnDefinition = "VARCHAR(100)")
@@ -41,4 +43,7 @@ public class Warehouse {
 
 	@OneToMany(mappedBy = "warehouse", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
 	private List<Rack> lstRack;
+	
+	@Column(name = "cca3", nullable = true, columnDefinition = "VARCHAR(3)")
+	private String cca3;
 }

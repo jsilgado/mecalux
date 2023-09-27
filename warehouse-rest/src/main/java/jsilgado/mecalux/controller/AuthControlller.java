@@ -20,7 +20,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import jsilgado.mecalux.persistence.entity.User;
 import jsilgado.mecalux.security.JwtAuthResponseDTO;
 import jsilgado.mecalux.security.JwtTokenProvider;
-import jsilgado.mecalux.service.UserDetailsServiceImpl;
+import jsilgado.mecalux.service.impl.UserDetailsServiceImpl;
 import jsilgado.mecalux.service.dto.LoginDTO;
 
 @RestController

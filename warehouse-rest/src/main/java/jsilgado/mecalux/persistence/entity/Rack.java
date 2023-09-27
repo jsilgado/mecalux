@@ -14,6 +14,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Type;
 
 import lombok.Data;
 
@@ -27,6 +28,7 @@ public class Rack {
     @GeneratedValue(generator = "uuid2")
     @GenericGenerator(name = "uuid2", strategy = "uuid2")
     @Column(name = "id", updatable = false, nullable = false, columnDefinition = "VARCHAR(36)")
+	@Type(type="org.hibernate.type.UUIDCharType")
     private UUID id;
 
 	@ManyToOne(fetch = FetchType.LAZY)

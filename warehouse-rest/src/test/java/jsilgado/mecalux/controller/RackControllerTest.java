@@ -24,7 +24,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import jsilgado.mecalux.exception.ResourceNotFoundException;
 import jsilgado.mecalux.exception.ServiceException;
-import jsilgado.mecalux.mapper.RackMapper;
 import jsilgado.mecalux.persistence.entity.Rack;
 import jsilgado.mecalux.persistence.entity.RackTypes;
 import jsilgado.mecalux.persistence.entity.Warehouse;
@@ -49,9 +48,6 @@ class RackControllerTest {
 
 	@MockBean
 	private RackService rackService;
-
-	@MockBean
-	private RackMapper rackMapper;
 
 	@MockBean
 	private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
@@ -111,9 +107,7 @@ class RackControllerTest {
 	@Test
 	void create_ok() throws Exception {
 
-		when(rackService.insert(Mockito.any(UUID.class), Mockito.any(RackInDTO.class))).thenReturn(rack);
-
-		when(rackMapper.rackToRackDTO(rack)).thenReturn(rackDTO);
+		when(rackService.insert(Mockito.any(UUID.class), Mockito.any(RackInDTO.class))).thenReturn(rackDTO);
 
 		String writeValueAsString = objectMapper.writeValueAsString(rackInDTO);
 
