@@ -24,17 +24,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import jsilgado.mecalux.exception.ResourceNotFoundException;
 import jsilgado.mecalux.exception.ServiceException;
-import jsilgado.mecalux.persistence.entity.Rack;
 import jsilgado.mecalux.persistence.entity.RackTypes;
-import jsilgado.mecalux.persistence.entity.Warehouse;
-import jsilgado.mecalux.persistence.entity.WarehouseFamilies;
 import jsilgado.mecalux.security.JwtAuthenticationEntryPoint;
 import jsilgado.mecalux.security.JwtTokenProvider;
 import jsilgado.mecalux.service.RackService;
 import jsilgado.mecalux.service.dto.RackDTO;
 import jsilgado.mecalux.service.dto.RackInDTO;
-import net.datafaker.Faker;
-
 
 /**
  * Test RackController
@@ -53,56 +48,37 @@ class RackControllerTest {
 	private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
 
 	@MockBean
-	private	JwtTokenProvider jwtTokenProvider;
+	private JwtTokenProvider jwtTokenProvider;
 
 	@MockBean
 	private UserDetailsService userDetailsService;
 
 	ObjectMapper objectMapper;
 
-
-    private Warehouse warehouse;
-
-    private RackInDTO rackInDTO;
-
-    private Rack rack;
-
-    private RackDTO rackDTO;
+	private RackInDTO rackInDTO;
 
 
+	private RackDTO rackDTO;
 
+	/**
+	 * Inicialización antes de empezar los test
+	 */
+	@BeforeEach
+	public void setUp() {
+		MockitoAnnotations.openMocks(this);
 
-    /**
-     * Inicialización antes de empezar los test
-     */
-    @BeforeEach
-    public void setUp() {
-        MockitoAnnotations.openMocks(this);
-        Faker faker = new Faker();
+		objectMapper = new ObjectMapper();
 
-        objectMapper = new ObjectMapper();
+		UUID randomUUID = UUID.randomUUID();
 
-        UUID randomUUID = UUID.randomUUID();
+		rackInDTO = new RackInDTO();
+		rackInDTO.setRackType(RackTypes.A);
 
-        warehouse = new Warehouse();
-        warehouse.setId(randomUUID);
-        warehouse.setClient(faker.chiquito().expressions());
-        warehouse.setSize(faker.number().numberBetween(1, 9));
-        warehouse.setWarehouseFamily(WarehouseFamilies.EST);
+		rackDTO = new RackDTO();
+		rackDTO.setRackType(RackTypes.A);
+		rackDTO.setId(randomUUID);
 
-        rack = new Rack();
-        rack.setRackType(RackTypes.A);
-        rack.setWarehouse(warehouse);
-        rack.setId(randomUUID);
-
-        rackInDTO = new RackInDTO();
-        rackInDTO.setRackType(RackTypes.A);
-
-        rackDTO = new RackDTO();
-        rackDTO.setRackType(RackTypes.A);
-        rackDTO.setId(randomUUID);
-
-    }
+	}
 
 	@Test
 	void create_ok() throws Exception {
@@ -143,7 +119,6 @@ class RackControllerTest {
 			.andExpect(content().contentType(MediaType.APPLICATION_JSON))
 			.andExpect(jsonPath("$.message").isNotEmpty());
 	}
-
 
 	@Test
 	void create_notOk_RackInWarehouse() throws Exception {

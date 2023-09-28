@@ -13,7 +13,6 @@ import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
@@ -30,88 +29,79 @@ import jsilgado.mecalux.service.dto.WarehouseInDTO;
 import jsilgado.mecalux.service.impl.WarehouseServiceImpl;
 import net.datafaker.Faker;
 
-
 /**
  * Test WarehouseService
  */
 @RunWith(MockitoJUnitRunner.class)
 class WarehouseServiceTest {
 
-
 	@Mock
 	private WarehouseRepository warehouseRepository;
-	
+
 	@Mock
 	private WarehouseMapper warehouseMapper;
-	
+
 	@Mock
 	private CountryClient countryClient;
 
+	/**
+	 * Servicio
+	 */
+	private WarehouseService service;
 
-    /**
-     * Servicio
-     */
-    private WarehouseService service;
+	private WarehouseInDTO warehouseInDTO;
 
+	private Warehouse warehouse;
 
-    private WarehouseInDTO warehouseInDTO;
+	private WarehouseDTO warehouseDTO;
 
-    private Warehouse warehouse;
-    
-    private WarehouseDTO warehouseDTO;
+	private List<Warehouse> lstWarehouse;
 
-    private List<Warehouse> lstWarehouse;
-    
-    private List<WarehouseDTO> lstWarehouseDTO;
-    
-    private List<CountryDTO> lstCountryDTO;
+	private List<WarehouseDTO> lstWarehouseDTO;
 
+	private List<CountryDTO> lstCountryDTO;
 
-    /**
-     * Inicialización antes de empezar los test
-     */
-    @BeforeEach
-    public void setUp() {
-    	MockitoAnnotations.openMocks(this); 
-    	service = new WarehouseServiceImpl(warehouseRepository, warehouseMapper, countryClient);
-    	assertNotNull(service);
-    	   
-        Faker faker = new Faker();
+	/**
+	 * Inicialización antes de empezar los test
+	 */
+	@BeforeEach
+	public void setUp() {
+		MockitoAnnotations.openMocks(this);
+		service = new WarehouseServiceImpl(warehouseRepository, warehouseMapper, countryClient);
+		assertNotNull(service);
 
-        warehouse = new Warehouse();
-        warehouse.setId(UUID.randomUUID());
-        warehouse.setSize(faker.number().numberBetween(1, 9));
-        warehouse.setWarehouseFamily(WarehouseFamilies.EST);
-        
-        warehouseDTO = new WarehouseDTO();
-        warehouseDTO.setId(UUID.randomUUID());
-        warehouseDTO.setSize(faker.number().numberBetween(1, 9));
-        warehouseDTO.setWarehouseFamily(WarehouseFamilies.EST);
-        
-        warehouseInDTO = new WarehouseInDTO();
-        warehouseInDTO.setSize(faker.number().numberBetween(1, 9));
-        warehouseInDTO.setWarehouseFamily(WarehouseFamilies.EST);
+		Faker faker = new Faker();
 
-    	lstWarehouse = new ArrayList<>();
-    	lstWarehouse.add(warehouse);
-    	
-    	lstWarehouseDTO = new ArrayList<WarehouseDTO>();
-    	lstWarehouseDTO.add(warehouseDTO);
-    	
-    	lstCountryDTO = new ArrayList<>();
-    	
-    	CountryDTO countryDTO = new CountryDTO();
-    	CountryDTO.Name name = countryDTO.new Name();
-    	countryDTO.setName(name);
-    	countryDTO.getName().setOfficial(faker.country().name());
-    	
-    	lstCountryDTO.add(countryDTO);
-    	
-    	
-    }
+		warehouse = Warehouse.builder().id(UUID.randomUUID()).size(faker.number().numberBetween(1, 9))
+				.warehouseFamily(WarehouseFamilies.EST).build();
 
+		warehouseDTO = new WarehouseDTO();
+		warehouseDTO.setId(UUID.randomUUID());
+		warehouseDTO.setSize(faker.number().numberBetween(1, 9));
+		warehouseDTO.setWarehouseFamily(WarehouseFamilies.EST);
 
-    @Test
+		warehouseInDTO = new WarehouseInDTO();
+		warehouseInDTO.setSize(faker.number().numberBetween(1, 9));
+		warehouseInDTO.setWarehouseFamily(WarehouseFamilies.EST);
+
+		lstWarehouse = new ArrayList<>();
+		lstWarehouse.add(warehouse);
+
+		lstWarehouseDTO = new ArrayList<WarehouseDTO>();
+		lstWarehouseDTO.add(warehouseDTO);
+
+		lstCountryDTO = new ArrayList<>();
+
+		CountryDTO countryDTO = new CountryDTO();
+		CountryDTO.Name name = countryDTO.new Name();
+		countryDTO.setName(name);
+		countryDTO.getName().setOfficial(faker.country().name());
+
+		lstCountryDTO.add(countryDTO);
+
+	}
+
+	@Test
     void getAll_Ok() {
 
     	when(warehouseRepository.findAll()).thenReturn(lstWarehouse);
@@ -126,7 +116,7 @@ class WarehouseServiceTest {
 
     }
 
-    @Test
+	@Test
     void create_Ok() {
 
     	when(warehouseRepository.save(Mockito.any(Warehouse.class))).thenReturn(warehouse);
@@ -139,9 +129,7 @@ class WarehouseServiceTest {
 
     }
 
-
-
-    @Test
+	@Test
 	void getRackPermutations_Ok() {
 
 		warehouse.setSize(4);
