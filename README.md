@@ -14,11 +14,26 @@
 
 It is a technical test on SpringBoot java that started with the basic concepts and little by little I have been adding technologies, design patterns and best practices.
 
-## :hammer: Project functionalities
+## :file_cabinet: Project functionalities
 
 > Management of warehouse and shelving entities (creation, modification, etc.) as well as their relationship.
 
 > Calculation of permutations: An endpoint must be presented in which the possible permutations of racking types in a warehouse are calculated based on possible permutations of racking types in a warehouse according to its family. family of the warehouse. Ex: ["AAA"," AAB", "AAC", ...," CCC"] .
+
+## :hammer_and_wrench: Technologies
+
+- **Open API** **[openapis.org](https://www.openapis.org/)**
+
+> OpenAPI is a standard specification for describing RESTful APIs. It allows both humans and machines to discover the capabilities of an API without the need to read documentation or understand the implementation.
+> CustomOpenAPI is a tool that helps developers create OpenAPI specifications. It provides a graphical user interface that makes it easy to define the endpoints, parameters, and other aspects of an API.
+> In short, OpenAPI is a standard for describing APIs, and customOpenAPI is a tool that helps developers create OpenAPI specifications..
+
+[Quick Guide](docs/OpenApis.md)
+
+- **Test Containers** **[Test Cointainers]**
+
+[Quick Guide](docs/TestContainer.md)
+
 
 ## :computer: Building and running Mecalux locally
 
