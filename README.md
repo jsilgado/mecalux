@@ -37,6 +37,8 @@ It is a technical test on SpringBoot java that started with the basic concepts a
 
 ## :computer: Building and running Mecalux locally
 
+Building and running Mecalux in your local dev environment is very easy. Be sure you have Git, Node.js, Docker and Maven installed, then follow the directions below. 
+
 ### postgres
 ```bash
 docker run --name postgres -it -p 5432:5432 -e POSTGRES_PASSWORD=postgres -d postgres:16.0
