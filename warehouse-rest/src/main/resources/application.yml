@@ -2,6 +2,10 @@
 client:
  url: http://localhost:4200
 
+server:
+  port: 8080
+  servlet.context-path: /
+
 spring:
   application:
     name: warehouse-rest

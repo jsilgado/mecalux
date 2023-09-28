@@ -74,16 +74,15 @@ class RackServiceTest {
 		service = new RackServiceImpl(rackRepository, warehouseRepository, rackMapper);
 		Faker faker = new Faker();
 
-		rack = new Rack();
+		rack = Rack.builder().id(UUID.randomUUID()).build();
+		
 		rack.setId(UUID.randomUUID());
 		
 		rackDTO = new RackDTO();
 		rackDTO.setId(UUID.randomUUID());
 
-		warehouse = new Warehouse();
-		warehouse.setId(UUID.randomUUID());
-		warehouse.setSize(faker.number().numberBetween(1, 9));
-		warehouse.setWarehouseFamily(WarehouseFamilies.EST);
+		warehouse = Warehouse.builder().id(UUID.randomUUID()).client(faker.chiquito().expressions())
+				.size(faker.number().numberBetween(1, 9)).warehouseFamily(WarehouseFamilies.EST).build();
 
 		rackInDTO = new RackInDTO();
 		rackInDTO.setRackType(RackTypes.A);

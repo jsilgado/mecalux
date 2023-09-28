@@ -1,11 +1,9 @@
 package jsilgado.mecalux.persistence.repository;
 
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.List;
-import java.util.UUID;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -17,7 +15,10 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.jdbc.Sql;
 
 import jsilgado.mecalux.persistence.entity.Rack;
-
+import jsilgado.mecalux.persistence.entity.RackTypes;
+import jsilgado.mecalux.persistence.entity.Warehouse;
+import jsilgado.mecalux.persistence.entity.WarehouseFamilies;
+import net.datafaker.Faker;
 
 /**
  * Test RackRepositoryTest
@@ -28,39 +29,59 @@ import jsilgado.mecalux.persistence.entity.Rack;
 @Sql({ "/dataTest.sql" })
 class RackRepositoryTest {
 
+	@Autowired
+	private RackRepository repository;
 
 	@Autowired
-    private RackRepository repository;
+	private WarehouseRepository warehouseRepository;
 
-	UUID uuid = UUID.fromString("3fa85f64-5717-4562-b3fc-2c963f66afa6");
+	Faker faker = new Faker();
 
+	/**
+	 * Inicialización antes de empezar los test
+	 */
+	@BeforeEach
+	public void setUp() {
 
-    /**
-     * Inicialización antes de empezar los test
-     */
-    @BeforeEach
-    public void setUp() {
-    	 assertNotNull(repository);
-    }
+	}
 
+	@Test
+	void countByWarehouse() {
 
-    @Test
-    void countByWarehouse() {
+		Rack rack = insertRack(RackTypes.A);
 
-    	Long size = repository.countByWarehouse(uuid);
+		Long size = repository.countByWarehouse(rack.getWarehouse().getId());
 
-    	assertTrue(size > 0);
+		assertTrue(size > 0);
 
-    }
+	}
 
+	@Test
+	void findByWarehouse() {
 
-    @Test
-    void findByWarehouse() {
+		Rack rack = insertRack(RackTypes.A);
 
-    	List<Rack> lstRack = repository.findByWarehouse(uuid);
+		List<Rack> lstRack = repository.findByWarehouse(rack.getWarehouse().getId());
 
-    	assertFalse(lstRack.isEmpty());
+		assertFalse(lstRack.isEmpty());
 
-    }
+	}
+
+	private Rack insertRack(RackTypes rackTypes) {
+
+		Warehouse warehouse = this.insertWarehouse();
+		Rack rack = Rack.builder().rackType(rackTypes).warehouse(warehouse).build();
+
+		return repository.save(rack);
+	}
+
+	private Warehouse insertWarehouse() {
+
+		Warehouse warehouse = Warehouse.builder().client(faker.artist().toString())
+				.warehouseFamily(WarehouseFamilies.EST).size(faker.number().numberBetween(10, 50)).build();
+
+		return warehouseRepository.save(warehouse);
+
+	}
 
 }

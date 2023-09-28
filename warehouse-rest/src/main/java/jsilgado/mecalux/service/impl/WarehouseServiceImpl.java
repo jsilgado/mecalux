@@ -33,7 +33,8 @@ public class WarehouseServiceImpl implements WarehouseService {
 
 	private final CountryClient countryClient;
 
-	public WarehouseServiceImpl(WarehouseRepository warehouseRepository, WarehouseMapper warehouseMapper, CountryClient countryClient) {
+	public WarehouseServiceImpl(WarehouseRepository warehouseRepository, WarehouseMapper warehouseMapper,
+			CountryClient countryClient) {
 		this.warehouseRepository = warehouseRepository;
 		this.warehouseMapper = warehouseMapper;
 		this.countryClient = countryClient;
@@ -51,11 +52,11 @@ public class WarehouseServiceImpl implements WarehouseService {
 
 		List<WarehouseDTO> lstWarehousesDTO = warehouseMapper.warehouseToWarehouseDTO(lstWarehouses);
 
-
 		// Recorrer la lista con stream
 		lstWarehousesDTO.stream()
 				// Asignar el país a cada elemento
-				.forEach(warehouseDTO -> warehouseDTO.setDsCountry(this.getCountryCommonName(warehouseDTO.getCdCountry())));
+				.forEach(warehouseDTO -> warehouseDTO
+						.setDsCountry(this.getCountryCommonName(warehouseDTO.getCdCountry())));
 
 		lstWarehousesDTO.stream().map(x -> countryClient.getCountrybycca3("col"));
 
@@ -72,10 +73,8 @@ public class WarehouseServiceImpl implements WarehouseService {
 	@Override
 	public WarehouseDTO insert(WarehouseInDTO i) {
 
-		Warehouse warehouse = new Warehouse();
-		warehouse.setClient(i.getClient());
-		warehouse.setSize(i.getSize());
-		warehouse.setWarehouseFamily(i.getWarehouseFamily());
+		Warehouse warehouse = Warehouse.builder().client(i.getClient()).size(i.getSize())
+				.warehouseFamily(i.getWarehouseFamily()).build();
 
 		return warehouseMapper.warehouseToWarehouseDTO(warehouseRepository.save(warehouse));
 	}
@@ -83,8 +82,9 @@ public class WarehouseServiceImpl implements WarehouseService {
 	@Override
 	public void update(WarehouseDTO e) {
 
-		Warehouse warehouse = warehouseRepository.findById(e.getId()).orElseThrow( () -> new ResourceNotFoundException("UUID Not Found"));
-		
+		Warehouse warehouse = warehouseRepository.findById(e.getId())
+				.orElseThrow(() -> new ResourceNotFoundException("UUID Not Found"));
+
 		warehouse.getLstRack();
 
 		// Validate the new size
@@ -133,25 +133,25 @@ public class WarehouseServiceImpl implements WarehouseService {
 
 		return lstResultado;
 	}
-	
-	
+
 	/**
-	 * Devuelve el nombre comun de un pais 
+	 * Devuelve el nombre comun de un pais
+	 * 
 	 * @param cca3
 	 * @return
 	 */
-	private String getCountryCommonName (String cca3) {
-		
+	private String getCountryCommonName(String cca3) {
+
 		String strCommon = StringUtils.EMPTY;
-		
+
 		if (StringUtils.isNotBlank(cca3)) {
 			List<CountryDTO> lstCountry = countryClient.getCountrybycca3(cca3);
 			CountryDTO country = lstCountry.get(0);
 			strCommon = country.getName().getCommon();
 		}
-		
+
 		return strCommon;
-		
+
 	}
 
 }

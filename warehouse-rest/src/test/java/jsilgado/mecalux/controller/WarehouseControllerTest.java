@@ -81,12 +81,9 @@ class WarehouseControllerTest {
 
         objectMapper = new ObjectMapper();
 
-        warehouse = new Warehouse();
-        warehouse.setId(UUID.randomUUID());
-        warehouse.setClient("Mecalux");
-        warehouse.setSize(2);
-        warehouse.setWarehouseFamily(WarehouseFamilies.EST);
-
+        warehouse = Warehouse.builder().id(UUID.randomUUID()).client("Mecalux")
+				.size(2).warehouseFamily(WarehouseFamilies.EST).build();
+        
         warehouseInDTO = new WarehouseInDTO();
         warehouseInDTO.setClient("Mecalux");
         warehouseInDTO.setSize(2);
