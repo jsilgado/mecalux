@@ -59,6 +59,10 @@ From the command console and accessing the warehouse-rest folder, execute the fo
 ```bash
 mvn install
 ```
+- **Migrate database.** Create the schemas in bbdd and the initial data load.
+```bash
+mvn flyway:migrate
+```
 - **Run.** Will raise our rest api.
 ```bash
 mvn spring-boot:run
