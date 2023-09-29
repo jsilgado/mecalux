@@ -49,7 +49,7 @@ Building and running Mecalux in your local dev environment is very easy. Be sure
 
 ### postgres
 ```bash
-docker run --name postgres -it -p 5432:5432 -e POSTGRES_PASSWORD=postgres -d postgres:16.0
+docker run --name postgres -it -p 5432:5432 -e POSTGRES_PASSWORD=postgres -d postgres:14.0
 ```
 
 ### warehouse-rest
