@@ -3,9 +3,13 @@ package jsilgado.mecalux.service.dto;
 import javax.validation.constraints.NotNull;
 
 import jsilgado.mecalux.persistence.entity.RackTypes;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
-@Data
+@Getter
+@Setter
+@ToString(callSuper = true)
 public class RackInDTO {
 
 	@NotNull(message = "rackType is mandatory")

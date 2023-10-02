@@ -3,9 +3,13 @@ package jsilgado.mecalux.service.dto;
 import java.util.Date;
 import java.util.List;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
-@Data
+@Getter
+@Setter
+@ToString(callSuper = true)
 public class ErrorDTO {
 
 	private Date date;
