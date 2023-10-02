@@ -17,11 +17,12 @@ spring:
     password: postgres
     continueOnError: true
   jpa:
+    open-in-view: false #Controls whether JPA keeps the session open during the view
     show-sql: true
     database-platform: org.hibernate.dialect.PostgreSQL9Dialect
     defer-datasource-initialization: true
     hibernate:
-      ddl-auto: create-drop     
+      ddl-auto: update     
 
 #jwt
 app:
@@ -31,12 +32,9 @@ app:
 #swagger
 springdoc:
   swagger-ui:
-    enable-auth: true
-    auth-scheme: bearer
-    display-request-duration: true
-    disable-swagger-default-url: true
-    tags-sorter: alpha
-    operations-sorter: alpha
+    display-request-duration: true #Enables the display of request duration in the Swagger user interface.
+    tags-sorter: alpha #Specifies how to order tags in the Swagger user interface.
+    operations-sorter: alpha #Specifies how to order operations in the Swagger user interface
     
  
 #actuator 
