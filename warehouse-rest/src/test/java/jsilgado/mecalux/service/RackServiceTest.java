@@ -82,7 +82,7 @@ class RackServiceTest {
 		rackDTO.setId(UUID.randomUUID());
 
 		warehouse = Warehouse.builder().id(UUID.randomUUID()).client(faker.chiquito().expressions())
-				.size(faker.number().numberBetween(1, 9)).warehouseFamily(WarehouseFamilies.EST).build();
+				.capacity(faker.number().numberBetween(1, 9)).warehouseFamily(WarehouseFamilies.EST).build();
 
 		rackInDTO = new RackInDTO();
 		rackInDTO.setRackType(RackTypes.A);

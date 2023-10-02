@@ -82,17 +82,17 @@ class WarehouseControllerTest {
         objectMapper = new ObjectMapper();
 
         warehouse = Warehouse.builder().id(UUID.randomUUID()).client("Mecalux")
-				.size(2).warehouseFamily(WarehouseFamilies.EST).build();
+				.capacity(2).warehouseFamily(WarehouseFamilies.EST).build();
         
         warehouseInDTO = new WarehouseInDTO();
         warehouseInDTO.setClient("Mecalux");
-        warehouseInDTO.setSize(2);
+        warehouseInDTO.setCapacity(2);
         warehouseInDTO.setWarehouseFamily(WarehouseFamilies.EST);
 
         warehouseDTO = new WarehouseDTO();
         warehouseDTO.setId(UUID.randomUUID());
         warehouseDTO.setClient("Mecalux");
-        warehouseDTO.setSize(2);
+        warehouseDTO.setCapacity(2);
         warehouseDTO.setWarehouseFamily(WarehouseFamilies.EST);
 
         lstWarehouse = new ArrayList<>();
@@ -114,7 +114,7 @@ class WarehouseControllerTest {
 			.andExpect(content().contentType(MediaType.APPLICATION_JSON))
 			.andExpect(jsonPath("$.id").isNotEmpty())
 			.andExpect(jsonPath("$.client").value("Mecalux"))
-		    .andExpect(jsonPath("$.size").value("2"));
+		    .andExpect(jsonPath("$.capacity").value("2"));
 
 	}
 
@@ -136,7 +136,7 @@ class WarehouseControllerTest {
 	@Test
 	void create_notOk_size() throws Exception {
 
-	    warehouseInDTO.setSize(-1);
+	    warehouseInDTO.setCapacity(-1);
 
 		String writeValueAsString = objectMapper.writeValueAsString(warehouseInDTO);
 
@@ -150,7 +150,7 @@ class WarehouseControllerTest {
 	@Test
 	void create_notOk_sizeNull() throws Exception {
 
-	    warehouseInDTO.setSize(null);
+	    warehouseInDTO.setCapacity(null);
 
 		String writeValueAsString = objectMapper.writeValueAsString(warehouseInDTO);
 

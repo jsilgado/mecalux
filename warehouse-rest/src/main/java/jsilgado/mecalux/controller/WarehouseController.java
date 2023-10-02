@@ -6,6 +6,9 @@ import java.util.UUID;
 
 import javax.validation.Valid;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -16,6 +19,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -42,7 +46,7 @@ public class WarehouseController {
 	public ResponseEntity<WarehouseDTO> create(@Valid @RequestBody WarehouseInDTO warehouseInDTO) {
 
 		WarehouseDTO warehouseDTO = warehouseService.insert(warehouseInDTO);
-		
+
 		return new ResponseEntity<>(warehouseDTO, HttpStatus.CREATED);
 
 	}
@@ -51,25 +55,24 @@ public class WarehouseController {
 	@GetMapping
 	public ResponseEntity<List<WarehouseDTO>> findAll() {
 
-		return Optional.ofNullable(warehouseService.getAll())
-				.map(lst -> ResponseEntity.ok().body(lst)) // 200 OK
+		return Optional.ofNullable(warehouseService.getAll()).map(lst -> ResponseEntity.ok().body(lst)) // 200 OK
 				.orElseGet(() -> ResponseEntity.notFound().build()); // 404 Not found
 	}
 
-	@Operation(summary = "Warehouse find one", description = "Gets one warehouse by their id", tags = { "WarehouseController" })
+	@Operation(summary = "Warehouse find one", description = "Gets one warehouse by their id", tags = {
+			"WarehouseController" })
 	@GetMapping("/{id}")
 	public ResponseEntity<WarehouseDTO> findById(
-			@Parameter(description="Warehouse id", required = true, example="3fa85f64-5717-4562-b3fc-2c963f66afa6", in = ParameterIn.PATH)
-			@PathVariable(value = "id") UUID id) {
+			@Parameter(description = "Warehouse id", required = true, example = "3fa85f64-5717-4562-b3fc-2c963f66afa6", in = ParameterIn.PATH) @PathVariable(value = "id") UUID id) {
 
 		WarehouseDTO warehouseDTO = warehouseService.getById(id);
 
-		return Optional.ofNullable(warehouseDTO)
-				.map(dto -> ResponseEntity.ok().body(dto)) // 200 OK
+		return Optional.ofNullable(warehouseDTO).map(dto -> ResponseEntity.ok().body(dto)) // 200 OK
 				.orElseThrow(() -> new ResourceNotFoundException("UUID Not Found")); // 404 Not found
 	}
 
-	@Operation(summary = "Warehouse update one", description = "Update one warehouse by their id", tags = { "WarehouseController" })
+	@Operation(summary = "Warehouse update one", description = "Update one warehouse by their id", tags = {
+			"WarehouseController" })
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@PutMapping("/{id}")
 	public ResponseEntity<WarehouseDTO> update(@PathVariable(value = "id") UUID id,
@@ -79,7 +82,7 @@ public class WarehouseController {
 				.orElseThrow(() -> new ResourceNotFoundException("UUID Not Found")); // 404 Not found
 
 		warehouseDTO.setClient(warehouseInDTO.getClient());
-		warehouseDTO.setSize(warehouseInDTO.getSize());
+		warehouseDTO.setCapacity(warehouseInDTO.getCapacity());
 		warehouseDTO.setWarehouseFamily(warehouseInDTO.getWarehouseFamily());
 
 		warehouseService.update(warehouseDTO);
@@ -87,27 +90,36 @@ public class WarehouseController {
 		return ResponseEntity.ok().body(warehouseDTO); // 200 OK
 	}
 
-
-	@Operation(summary = "Delete warehouse", description = "Delete an exists warehouse and their racks", tags = { "WarehouseController" })
+	@Operation(summary = "Delete warehouse", description = "Delete an exists warehouse and their racks", tags = {
+			"WarehouseController" })
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> delete(
-			@Parameter(description="Warehouse id", required = true, example="3fa85f64-5717-4562-b3fc-2c963f66afa6", in = ParameterIn.PATH )
-			@PathVariable(value = "id") UUID id) {
+			@Parameter(description = "Warehouse id", required = true, example = "3fa85f64-5717-4562-b3fc-2c963f66afa6", in = ParameterIn.PATH) @PathVariable(value = "id") UUID id) {
 
-        warehouseService.delete(id);
+		warehouseService.delete(id);
 
-        return ResponseEntity.noContent().build();
+		return ResponseEntity.noContent().build();
 
 	}
 
-	@Operation(summary = "Warehouse racks permutations",
-			description = "Calculates the possible permutations of racking types in a warehouse based on the warehouse family",
-			tags = { "WarehouseController" })
+	@Operation(summary = "Warehouse racks permutations", description = "Calculates the possible permutations of racking types in a warehouse based on the warehouse family", tags = {
+			"WarehouseController" })
 	@GetMapping("/rackspermutations/{id}")
-	public ResponseEntity<List<String>> racksPermutations(@PathVariable(value = "id") UUID id){
+	public ResponseEntity<List<String>> racksPermutations(@PathVariable(value = "id") UUID id) {
 
 		return new ResponseEntity<>(warehouseService.getRacksPermutations(id), HttpStatus.OK);
+	}
+
+	@Operation(summary = "Search warehouses", description = "Search with paging of warehouses", tags = {
+	"WarehouseController" })
+	@GetMapping("/search")
+	public Page<WarehouseDTO> search(@RequestParam(name = "page", defaultValue = "0") int page,
+			@RequestParam(name = "size", defaultValue = "10") int size,
+			@RequestParam(name = "sort", defaultValue = "client") String sort) {
+		PageRequest pageRequest = PageRequest.of(page, size, Sort.by(sort));
+
+		return warehouseService.search(pageRequest);
 	}
 
 }

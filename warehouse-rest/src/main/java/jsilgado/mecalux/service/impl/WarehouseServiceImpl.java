@@ -8,6 +8,8 @@ import java.util.UUID;
 import javax.transaction.Transactional;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import jsilgado.mecalux.exception.ResourceNotFoundException;
@@ -73,7 +75,7 @@ public class WarehouseServiceImpl implements WarehouseService {
 	@Override
 	public WarehouseDTO insert(WarehouseInDTO i) {
 
-		Warehouse warehouse = Warehouse.builder().client(i.getClient()).size(i.getSize())
+		Warehouse warehouse = Warehouse.builder().client(i.getClient()).capacity(i.getCapacity())
 				.warehouseFamily(i.getWarehouseFamily()).build();
 
 		return warehouseMapper.warehouseToWarehouseDTO(warehouseRepository.save(warehouse));
@@ -88,7 +90,7 @@ public class WarehouseServiceImpl implements WarehouseService {
 		warehouse.getLstRack();
 
 		// Validate the new size
-		if (warehouse.getLstRack().size() > e.getSize()) {
+		if (warehouse.getLstRack().size() > e.getCapacity()) {
 			throw new ServiceException("The new size is smaller than the warehouse racks.");
 		}
 
@@ -118,7 +120,7 @@ public class WarehouseServiceImpl implements WarehouseService {
 		WarehouseModel warehouseModel = WarehouseFactory.getWarehouse(warehouse.getWarehouseFamily());
 		List<RackTypes> validRacks = warehouseModel.validRacks();
 
-		return permutations(new ArrayList<>(), validRacks, StringUtils.EMPTY, warehouse.getSize());
+		return permutations(new ArrayList<>(), validRacks, StringUtils.EMPTY, warehouse.getCapacity());
 	}
 
 	private List<String> permutations(List<String> lstResultado, List<RackTypes> elem, String perm, int sizeWarehouse) {
@@ -152,6 +154,16 @@ public class WarehouseServiceImpl implements WarehouseService {
 
 		return strCommon;
 
+	}
+
+	@Override
+	public Page<WarehouseDTO> search(PageRequest pageRequest) {
+		
+		Page<Warehouse> search = warehouseRepository.findAll(pageRequest);
+		
+		Page<WarehouseDTO> searchDTO = search.map(warehouseMapper::warehouseToWarehouseDTO);
+		
+		return searchDTO;
 	}
 
 }

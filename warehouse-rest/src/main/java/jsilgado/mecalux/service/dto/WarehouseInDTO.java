@@ -16,8 +16,8 @@ public class WarehouseInDTO {
 	@NotBlank(message = "Client is mandatory")
 	private String client;
 
-	@NotNull(message = "Size is mandatory")
-	@Min(value = 0, message = "Size should not be less than 0")
-	private Integer size;
+	@NotNull(message = "Capacity is mandatory")
+	@Min(value = 0, message = "Capacity should not be less than 0")
+	private Integer capacity;
 
 }

@@ -3,18 +3,23 @@ package jsilgado.mecalux.service;
 import java.util.List;
 import java.util.UUID;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+
 public interface ServiceTemplate<E, I> {
 
-	public E initialize();
+	E initialize();
 
-	public List<E> getAll();
+	List<E> getAll();
 
-	public E getById(UUID id);
+	E getById(UUID id);
 
-	public E insert(I i);
+	E insert(I i);
 
-	public void update(E t);
+	void update(E t);
 
-	public void delete(UUID id);
+	void delete(UUID id);
+	
+	Page<E> search(PageRequest pageRequest);
 
 }
