@@ -81,13 +81,7 @@
 			<artifactId>h2</artifactId>
 			<scope>test</scope>
 		</dependency>
-		
-		<!--<dependency>
-			<groupId>io.github.openfeign</groupId>
-			<artifactId>feign-core</artifactId>
-			<version>${feign.version}</version>
-		</dependency>-->
-		
+				
 		<dependency>
     		<groupId>org.springframework.cloud</groupId>
     		<artifactId>spring-cloud-starter-openfeign</artifactId>
@@ -164,6 +158,17 @@
 
 	<build>
 		<plugins>
+			
+			<plugin>
+			    <groupId>org.flywaydb</groupId>
+			    <artifactId>flyway-maven-plugin</artifactId>
+			    <configuration>
+                    <url>jdbc:postgresql://localhost:5432/postgres</url>
+                    <user>postgres</user>
+                    <password>postgres</password>
+                </configuration>
+			</plugin>
+			
 			<plugin>
             	<groupId>org.apache.maven.plugins</groupId>
             	<artifactId>maven-compiler-plugin</artifactId>
@@ -211,6 +216,8 @@
 				<groupId>org.apache.maven.plugins</groupId>
             	<artifactId>maven-surefire-plugin</artifactId>
 			</plugin>
+			
+			
 		</plugins>
 	</build>
 

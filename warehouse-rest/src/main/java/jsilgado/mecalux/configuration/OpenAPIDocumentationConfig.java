@@ -21,28 +21,25 @@ public class OpenAPIDocumentationConfig {
 
 	@Value("${server.servlet.context-path}")
 	private String contextPath;
-	
-    @Autowired
-    private BuildProperties buildProperties;
-    
-    private static final String BEARER = "TOKEN";
-        
-    @Bean
+
+	@Autowired
+	private BuildProperties buildProperties;
+
+	private static final String BEARER = "TOKEN";
+
+	@Bean
 	public OpenAPI customOpenAPI() {
 		// define the apiKey SecuritySchema
-		return new OpenAPI()
-				.components(new Components().addSecuritySchemes(BEARER,
-						apiKeySecuritySchema()))
+		return new OpenAPI().components(new Components().addSecuritySchemes(BEARER, apiKeySecuritySchema()))
 				.info(new Info().version(buildProperties.getVersion()).title("Warehouse API")
 						.description("RESTful services documentation with OpenAPI 3."))
 				.security(Arrays.asList(new SecurityRequirement().addList(BEARER)))
 				.addServersItem(new Server().url(contextPath));
 	}
-	
+
 	public SecurityScheme apiKeySecuritySchema() {
 		return new SecurityScheme().name("Authorization").description("Description about the TOKEN").type(Type.HTTP)
 				.bearerFormat("JWT").scheme("bearer");
 	}
-	
-	
+
 }

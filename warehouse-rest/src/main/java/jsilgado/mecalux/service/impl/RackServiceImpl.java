@@ -42,7 +42,7 @@ public class RackServiceImpl implements RackService{
 		Warehouse warehouse = Optional.ofNullable(warehouseRepository.findById(warehouseid)).
 		map(Optional::get).orElseThrow(() -> new ResourceNotFoundException("Warehouse", "id", warehouseid));
 
-		this.validateSizeWarehouse(warehouseid, warehouse.getSize());
+		this.validateCapacityWarehouse(warehouseid, warehouse.getCapacity());
 
 		WarehouseModel warehouseModel = WarehouseFactory.getWarehouse(warehouse.getWarehouseFamily());
 		warehouseModel.validateRackInWarehouse(i.getRackType());
@@ -74,7 +74,7 @@ public class RackServiceImpl implements RackService{
 	}
 
 
-	private void validateSizeWarehouse(UUID warehouseid, Integer warehouseSize) {
+	private void validateCapacityWarehouse(UUID warehouseid, Integer warehouseSize) {
 
 
 		Long countByWarehouse = rackrepository.countByWarehouse(warehouseid);
