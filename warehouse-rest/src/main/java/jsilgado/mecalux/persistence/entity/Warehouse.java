@@ -40,8 +40,8 @@ public class Warehouse {
 	@Enumerated(value = EnumType.STRING)
 	private WarehouseFamilies warehouseFamily;
 
-	@Column(name = "size", nullable = false)
-	private Integer size;
+	@Column(name = "capacity", nullable = false)
+	private Integer capacity;
 
 	@OneToMany(mappedBy = "warehouse", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
 	private List<Rack> lstRack;

@@ -72,16 +72,16 @@ class WarehouseServiceTest {
 
 		Faker faker = new Faker();
 
-		warehouse = Warehouse.builder().id(UUID.randomUUID()).size(faker.number().numberBetween(1, 9))
+		warehouse = Warehouse.builder().id(UUID.randomUUID()).capacity(faker.number().numberBetween(1, 9))
 				.warehouseFamily(WarehouseFamilies.EST).build();
 
 		warehouseDTO = new WarehouseDTO();
 		warehouseDTO.setId(UUID.randomUUID());
-		warehouseDTO.setSize(faker.number().numberBetween(1, 9));
+		warehouseDTO.setCapacity(faker.number().numberBetween(1, 9));
 		warehouseDTO.setWarehouseFamily(WarehouseFamilies.EST);
 
 		warehouseInDTO = new WarehouseInDTO();
-		warehouseInDTO.setSize(faker.number().numberBetween(1, 9));
+		warehouseInDTO.setCapacity(faker.number().numberBetween(1, 9));
 		warehouseInDTO.setWarehouseFamily(WarehouseFamilies.EST);
 
 		lstWarehouse = new ArrayList<>();
@@ -132,7 +132,7 @@ class WarehouseServiceTest {
 	@Test
 	void getRackPermutations_Ok() {
 
-		warehouse.setSize(4);
+		warehouse.setCapacity(4);
 
 		when(warehouseRepository.findById(Mockito.any(UUID.class))).thenReturn(Optional.of(warehouse));
 

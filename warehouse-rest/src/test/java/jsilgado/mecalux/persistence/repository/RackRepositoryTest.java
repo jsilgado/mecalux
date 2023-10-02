@@ -12,7 +12,6 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.jdbc.Sql;
 
 import jsilgado.mecalux.persistence.entity.Rack;
 import jsilgado.mecalux.persistence.entity.RackTypes;
@@ -26,7 +25,6 @@ import net.datafaker.Faker;
 @DataJpaTest
 @TestPropertySource(locations = "classpath:test.properties")
 @AutoConfigureTestDatabase(replace = Replace.NONE)
-@Sql({ "/dataTest.sql" })
 class RackRepositoryTest {
 
 	@Autowired
@@ -78,7 +76,7 @@ class RackRepositoryTest {
 	private Warehouse insertWarehouse() {
 
 		Warehouse warehouse = Warehouse.builder().client(faker.artist().toString())
-				.warehouseFamily(WarehouseFamilies.EST).size(faker.number().numberBetween(10, 50)).build();
+				.warehouseFamily(WarehouseFamilies.EST).capacity(faker.number().numberBetween(10, 50)).build();
 
 		return warehouseRepository.save(warehouse);
 

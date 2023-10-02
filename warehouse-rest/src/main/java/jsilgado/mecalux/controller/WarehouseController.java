@@ -79,7 +79,7 @@ public class WarehouseController {
 				.orElseThrow(() -> new ResourceNotFoundException("UUID Not Found")); // 404 Not found
 
 		warehouseDTO.setClient(warehouseInDTO.getClient());
-		warehouseDTO.setSize(warehouseInDTO.getSize());
+		warehouseDTO.setCapacity(warehouseInDTO.getCapacity());
 		warehouseDTO.setWarehouseFamily(warehouseInDTO.getWarehouseFamily());
 
 		warehouseService.update(warehouseDTO);
