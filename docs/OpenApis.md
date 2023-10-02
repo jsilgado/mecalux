@@ -1,24 +1,4 @@
-# Mecalux - Warehouses and Racks
-<p align="center">
-  <img src="https://img.shields.io/badge/Java-17-blue">
-  <img src="https://img.shields.io/badge/Spring_boot-2.7.16-green"> 
-  <img src="https://img.shields.io/badge/Postgres-16-blue">   
-</p>
-
-<p align="center">
-  <img src="https://img.shields.io/badge/Feign-11.8-red"> 
-  <img src="https://img.shields.io/badge/Hibernate-JPA-purple"> 
-  <img src="https://img.shields.io/badge/Spring Security-JWT-white">
-  <img src="https://img.shields.io/badge/JUnit-Mockito-blue">
-</p>
-
-It is a technical test on SpringBoot java that started with the basic concepts and little by little I have been adding technologies, design patterns and best practices.
-
-## :file_cabinet: Project functionalities
-
-> Management of warehouse and shelving entities (creation, modification, etc.) as well as their relationship.
-
-> Calculation of permutations: An endpoint must be presented in which the possible permutations of racking types in a warehouse are calculated based on possible permutations of racking types in a warehouse according to its family. family of the warehouse. Ex: ["AAA"," AAB", "AAC", ...," CCC"] .
+# Mecalux - Warehouses and Racks (OpenApi)
 
 ## :hammer_and_wrench: Technologies
 
@@ -28,43 +8,77 @@ It is a technical test on SpringBoot java that started with the basic concepts a
 > CustomOpenAPI is a tool that helps developers create OpenAPI specifications. It provides a graphical user interface that makes it easy to define the endpoints, parameters, and other aspects of an API.
 > In short, OpenAPI is a standard for describing APIs, and customOpenAPI is a tool that helps developers create OpenAPI specifications..
 
-[Quick Guide](docs/OpenApis.md)
-
-- **Test Containers** **[Test Cointainers]**
-
-[Quick Guide](docs/TestContainer.md)
-
-
-## :computer: Building and running Mecalux locally
-
-Building and running Mecalux in your local dev environment is very easy. Be sure you have Git, Node.js, Docker and Maven installed, then follow the directions below. 
-
-### postgres
+- **Integrating.** Add the OpenAPI dependency to your project.
 ```bash
-docker run --name postgres -it -p 5432:5432 -e POSTGRES_PASSWORD=postgres -d postgres:16.0
+<dependency>
+    <groupId>org.springdoc</groupId>
+    <artifactId>springdoc-openapi-ui</artifactId>
+</dependency>
 ```
 
-### warehouse-rest
-From the command console and accessing the warehouse-rest folder, execute the following commands:
-
-- **Install.** It will install the libraries that the project requires as dependencies.
+- **OpenAPI configuration.**
+> Spring Boot configuration file: application.yml
 ```bash
-mvn install
-```
-- **Run.** Will raise our rest api.
-```bash
-mvn spring-boot:run
+  swagger-ui:
+    display-request-duration: true #Enables the display of request duration in the Swagger user interface.
+    tags-sorter: alpha #Specifies how to order tags in the Swagger user interface.
+    operations-sorter: alpha #Specifies how to order operations in the Swagger user interface
 ```
 
-To check that it has been deployed correctly, go to the address: http://localhost:8080/swagger-ui/index.html
-
-### mecalux-app
-From the command console and accessing the mecalux-app folder, execute the following commands:
-- **Install.** It will install the libraries that the project requires as dependencies.
+- **Generate build information.**
+> https://docs.spring.io/spring-boot/docs/1.4.1.RELEASE/maven-plugin/examples/build-info.html#
+> Spring Boot Actuator displays build-related information if a META-INF/build-info.properties file is present. The build-info goal generates such file with the coordinates of the project and the build time. It also allows you to add an arbitrary number of additional properties:
 ```bash
-npm install
+<plugin>
+  <groupId>org.springframework.boot</groupId>
+  <artifactId>spring-boot-maven-plugin</artifactId>
+  <executions>
+    <execution>
+      <id>build-info</id>
+      <goals>
+        <goal>build-info</goal>
+      </goals>
+      <configuration>
+      <additionalProperties>
+        <sourceEncoding>${project.build.sourceEncoding}</sourceEncoding>
+        <custom>custom value</custom>
+        <java.version>${java.version}</java.version>
+        <java.vendor>${java.vendor}</java.vendor>
+        </additionalProperties>
+      </configuration>
+    </execution>
+  </executions>
+</plugin>
 ```
-- **Run.** Will open an instance of the browser with our application running..
+> This configuration will generate a build-info.properties at the expected location with four additional keys. Note that maven.compiler.source and maven.compiler.target are expected to be regular properties available in the project. They will be interpolated as you would expect.
+
+- **Customize OpenApi.**
 ```bash
-ng serve -o
+@Configuration
+public class OpenAPIDocumentationConfig {
+
+	@Value("${server.servlet.context-path}")
+	private String contextPath;
+
+	@Autowired
+	private BuildProperties buildProperties;
+
+	private static final String BEARER = "TOKEN";
+
+	@Bean
+	public OpenAPI customOpenAPI() {
+		// define the apiKey SecuritySchema
+		return new OpenAPI().components(new Components().addSecuritySchemes(BEARER, apiKeySecuritySchema()))
+				.info(new Info().version(buildProperties.getVersion()).title("Warehouse API")
+						.description("RESTful services documentation with OpenAPI 3."))
+				.security(Arrays.asList(new SecurityRequirement().addList(BEARER)))
+				.addServersItem(new Server().url(contextPath));
+	}
+
+	public SecurityScheme apiKeySecuritySchema() {
+		return new SecurityScheme().name("Authorization").description("Description about the TOKEN").type(Type.HTTP)
+				.bearerFormat("JWT").scheme("bearer");
+	}
+
+}
 ```
