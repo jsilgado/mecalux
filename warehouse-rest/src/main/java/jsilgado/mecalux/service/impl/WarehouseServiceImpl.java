@@ -8,6 +8,8 @@ import java.util.UUID;
 import javax.transaction.Transactional;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import jsilgado.mecalux.exception.ResourceNotFoundException;
@@ -152,6 +154,16 @@ public class WarehouseServiceImpl implements WarehouseService {
 
 		return strCommon;
 
+	}
+
+	@Override
+	public Page<WarehouseDTO> search(PageRequest pageRequest) {
+		
+		Page<Warehouse> search = warehouseRepository.findAll(pageRequest);
+		
+		Page<WarehouseDTO> searchDTO = search.map(warehouseMapper::warehouseToWarehouseDTO);
+		
+		return searchDTO;
 	}
 
 }
