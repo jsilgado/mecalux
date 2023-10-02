@@ -54,14 +54,8 @@ public class WarehouseServiceImpl implements WarehouseService {
 
 		List<WarehouseDTO> lstWarehousesDTO = warehouseMapper.warehouseToWarehouseDTO(lstWarehouses);
 
-		// Recorrer la lista con stream
-		lstWarehousesDTO.stream()
-				// Asignar el país a cada elemento
-				.forEach(warehouseDTO -> warehouseDTO
-						.setDsCountry(this.getCountryCommonName(warehouseDTO.getCdCountry())));
-
-		lstWarehousesDTO.stream().map(x -> countryClient.getCountrybycca3("col"));
-
+		this.setCountryCommonName(lstWarehousesDTO);
+	
 		return lstWarehousesDTO;
 	}
 
@@ -77,8 +71,12 @@ public class WarehouseServiceImpl implements WarehouseService {
 
 		Warehouse warehouse = Warehouse.builder().client(i.getClient()).capacity(i.getCapacity())
 				.warehouseFamily(i.getWarehouseFamily()).build();
+		
+		WarehouseDTO dto = warehouseMapper.warehouseToWarehouseDTO(warehouseRepository.save(warehouse));
+		
+		setCountryCommonName(dto);
 
-		return warehouseMapper.warehouseToWarehouseDTO(warehouseRepository.save(warehouse));
+		return dto;
 	}
 
 	@Override
@@ -135,7 +133,42 @@ public class WarehouseServiceImpl implements WarehouseService {
 
 		return lstResultado;
 	}
+	
+	@Override
+	public Page<WarehouseDTO> search(PageRequest pageRequest) {
+		
+		Page<Warehouse> search = warehouseRepository.findAll(pageRequest);
+		
+		Page<WarehouseDTO> searchDTO = search.map(warehouseMapper::warehouseToWarehouseDTO);
+		
+		this.setCountryCommonName(searchDTO.getContent());
+		
+		return searchDTO;
+	}
 
+	
+	/**
+	 * Devuelve el nombre comun de un pais
+	 * 
+	 * @param cca3
+	 * @return
+	 */
+	private void setCountryCommonName(WarehouseDTO dto) {
+	    dto.setDsCountry(getCountryCommonName(dto.getCdCountry()));
+	}
+	
+	
+	/**
+	 * Devuelve el nombre comun de un pais
+	 * 
+	 * @param cca3
+	 * @return
+	 */
+	private void setCountryCommonName(List<WarehouseDTO> dtos) {
+		dtos.forEach(this::setCountryCommonName);
+	}
+	
+	
 	/**
 	 * Devuelve el nombre comun de un pais
 	 * 
@@ -154,16 +187,6 @@ public class WarehouseServiceImpl implements WarehouseService {
 
 		return strCommon;
 
-	}
-
-	@Override
-	public Page<WarehouseDTO> search(PageRequest pageRequest) {
-		
-		Page<Warehouse> search = warehouseRepository.findAll(pageRequest);
-		
-		Page<WarehouseDTO> searchDTO = search.map(warehouseMapper::warehouseToWarehouseDTO);
-		
-		return searchDTO;
 	}
 
 }
