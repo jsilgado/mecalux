@@ -32,20 +32,24 @@ It is a technical test on SpringBoot java that started with the basic concepts a
 
 ## :hammer_and_wrench: Technologies
 
-- **Open API** **[openapis.org](https://www.openapis.org/)**
-<img src="https://github.com/jsilgado/mecalux/blob/feature/flyway/docs/images/OpenApi.png" alt="OpenApi" width="80" height="80">
+### Open API. -> **[openapis.org](https://www.openapis.org/)**
+<img src="https://github.com/jsilgado/mecalux/blob/master/docs/images/OpenApi.png" alt="OpenApi" width="80" height="80">
 
 > OpenAPI is a standard specification for describing RESTful APIs. It allows both humans and machines to discover the capabilities of an API without the need to read documentation or understand the implementation.
 [Quick Guide](docs/OpenApis.md)
 
 
-- **Flyway** **[documentation.red-gate.com]()**
-<img src="https://github.com/jsilgado/mecalux/blob/feature/flyway/docs/images/Flyway.jpg" alt="OpenApi" width="80" height="80" align="center">
+### Flyway. -> **[documentation.red-gate.com (Quick start Maven) ](https://documentation.red-gate.com/fd/quickstart-maven-184127578.html)**
+<img src="https://github.com/jsilgado/mecalux/blob/master/docs/images/Flyway.jpg" alt="OpenApi" width="80" height="80" align="center">
 
 > Flyway is a database migration tool that uses SQL scripts to apply changes to a database. Flyway is an open source tool and is available for a wide range of relational databases, including MySQL, PostgreSQL, Oracle, SQL Server and MariaDB..
 [Quick Guide](docs/Flyway.md)
 
-- **Test Containers** **[Test Cointainers]**
+### Query JPA Filters. -> **[https://github.com/acoboh/query-filter-jpa/wiki](https://github.com/acoboh/query-filter-jpa/wiki)**
+> The QueryFilterJPA Library adds the possibility of creating custom filters with RHS Colon and LHS Brackets with Spring JPA easily. This library is useful for allowing the user to obtain data according to their requirements in an easy way for the programmer. With just a few small configuration classes, users will have the ability to create filters with infinite possibilities.
+[Quick Guide](docs/QueryFilterJPA.md)
+
+### **Test Containers** **[Test Cointainers]**
 [Quick Guide](docs/TestContainer.md)
 
 
