@@ -22,7 +22,9 @@ spring:
     database-platform: org.hibernate.dialect.PostgreSQL9Dialect
     defer-datasource-initialization: true
     hibernate:
-      ddl-auto: update     
+      ddl-auto: update
+    properties:
+       hibernate.metadata_builder_contributor: io.github.acoboh.query.filter.jpa.contributor.QfMetadataBuilderContributor #Query Filter JPA Spring Boot 2.7.x in 3.X is not neccesary 
 
 #jwt
 app:

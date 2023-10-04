@@ -22,10 +22,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.github.acoboh.query.filter.jpa.annotations.QFParam;
+import io.github.acoboh.query.filter.jpa.processor.QueryFilter;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import jsilgado.mecalux.exception.ResourceNotFoundException;
+import jsilgado.mecalux.persistence.entity.Warehouse;
+import jsilgado.mecalux.persistence.entity.WarehouseFilterDef;
 import jsilgado.mecalux.service.WarehouseService;
 import jsilgado.mecalux.service.dto.WarehouseDTO;
 import jsilgado.mecalux.service.dto.WarehouseInDTO;
@@ -116,10 +120,12 @@ public class WarehouseController {
 	@GetMapping("/search")
 	public Page<WarehouseDTO> search(@RequestParam(name = "page", defaultValue = "0") int page,
 			@RequestParam(name = "size", defaultValue = "10") int size,
-			@RequestParam(name = "sort", defaultValue = "client") String sort) {
+			@RequestParam(name = "sort", defaultValue = "client") String sort,
+			@RequestParam(required = false)  @QFParam(WarehouseFilterDef.class) QueryFilter<Warehouse> filter) {
+		
 		PageRequest pageRequest = PageRequest.of(page, size, Sort.by(sort));
-
-		return warehouseService.search(pageRequest);
-	}
-
+		
+		return warehouseService.search(pageRequest, filter);
+	}	
+	
 }
