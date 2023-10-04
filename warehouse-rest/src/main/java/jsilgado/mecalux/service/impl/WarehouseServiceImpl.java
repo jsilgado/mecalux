@@ -12,6 +12,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import io.github.acoboh.query.filter.jpa.processor.QueryFilter;
 import jsilgado.mecalux.exception.ResourceNotFoundException;
 import jsilgado.mecalux.exception.ServiceException;
 import jsilgado.mecalux.feign.CountryClient;
@@ -135,9 +136,9 @@ public class WarehouseServiceImpl implements WarehouseService {
 	}
 	
 	@Override
-	public Page<WarehouseDTO> search(PageRequest pageRequest) {
+	public Page<WarehouseDTO> search(PageRequest pageRequest, QueryFilter<Warehouse> filter) {
 		
-		Page<Warehouse> search = warehouseRepository.findAll(pageRequest);
+		Page<Warehouse> search = warehouseRepository.findAll(filter, pageRequest);
 		
 		Page<WarehouseDTO> searchDTO = search.map(warehouseMapper::warehouseToWarehouseDTO);
 		
