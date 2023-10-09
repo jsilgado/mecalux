@@ -88,5 +88,5 @@ npm install
 ```
 - **Run.** Will open an instance of the browser with our application running..
 ```bash
-ng serve -o
+npm run ng serve -o
 ```
