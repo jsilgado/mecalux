@@ -10,7 +10,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString(callSuper = true)
-public class RackDTO {
+public class RackDTO  extends AuditDTO {
 
 	private UUID id;
 

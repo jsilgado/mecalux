@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -106,6 +107,34 @@ public class WarehouseController {
 		return ResponseEntity.noContent().build();
 
 	}
+	
+	
+	@Operation(summary = "Delete Soft warehouse", description = "Delete Soft an exists warehouse and their racks", tags = {
+	"WarehouseController" })
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@DeleteMapping("/{id}/soft-delete")
+	public ResponseEntity<WarehouseDTO> softDelete(
+	@Parameter(description = "Warehouse id", required = true, example = "3fa85f64-5717-4562-b3fc-2c963f66afa6", in = ParameterIn.PATH) @PathVariable(value = "id") UUID id) {
+
+		WarehouseDTO warehouseDTO = warehouseService.softDelete(id);
+
+		return new ResponseEntity<>(warehouseDTO, HttpStatus.OK); 
+	}
+	
+	@Operation(summary = "Undo Delete Soft warehouse", description = "Undo Delete Soft an exists warehouse and their racks", tags = {
+	"WarehouseController" })
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@PatchMapping("/{id}/undo-soft-delete")
+	public ResponseEntity<WarehouseDTO> undoSoftDelete(
+	@Parameter(description = "Warehouse id", required = true, example = "3fa85f64-5717-4562-b3fc-2c963f66afa6", in = ParameterIn.PATH) @PathVariable(value = "id") UUID id) {
+
+		WarehouseDTO warehouseDTO = warehouseService.undoSoftDelete(id);
+
+		return new ResponseEntity<>(warehouseDTO, HttpStatus.OK); 
+	}
+
+
+	
 
 	@Operation(summary = "Warehouse racks permutations", description = "Calculates the possible permutations of racking types in a warehouse based on the warehouse family", tags = {
 			"WarehouseController" })

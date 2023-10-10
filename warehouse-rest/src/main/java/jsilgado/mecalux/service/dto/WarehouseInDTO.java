@@ -3,6 +3,7 @@ package jsilgado.mecalux.service.dto;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import jsilgado.mecalux.persistence.entity.WarehouseFamilies;
 import lombok.Getter;
@@ -24,4 +25,6 @@ public class WarehouseInDTO {
 	@Min(value = 0, message = "Capacity should not be less than 0")
 	private Integer capacity;
 
+	@Size(min = 3, max = 3)
+	private String cdCountry;
 }

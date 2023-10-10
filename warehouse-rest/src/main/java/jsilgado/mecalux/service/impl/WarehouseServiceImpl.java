@@ -1,5 +1,6 @@
 package jsilgado.mecalux.service.impl;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -8,11 +9,13 @@ import java.util.UUID;
 import javax.transaction.Transactional;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import io.github.acoboh.query.filter.jpa.processor.QueryFilter;
+import jsilgado.mecalux.configuration.AuditorAwareImpl;
 import jsilgado.mecalux.exception.ResourceNotFoundException;
 import jsilgado.mecalux.exception.ServiceException;
 import jsilgado.mecalux.feign.CountryClient;
@@ -35,6 +38,9 @@ public class WarehouseServiceImpl implements WarehouseService {
 	private final WarehouseMapper warehouseMapper;
 
 	private final CountryClient countryClient;
+	
+	@Autowired
+	private AuditorAwareImpl auditorAwareImpl;
 
 	public WarehouseServiceImpl(WarehouseRepository warehouseRepository, WarehouseMapper warehouseMapper,
 			CountryClient countryClient) {
@@ -69,10 +75,9 @@ public class WarehouseServiceImpl implements WarehouseService {
 
 	@Override
 	public WarehouseDTO insert(WarehouseInDTO i) {
-
-		Warehouse warehouse = Warehouse.builder().client(i.getClient()).capacity(i.getCapacity())
-				.warehouseFamily(i.getWarehouseFamily()).build();
 		
+		Warehouse warehouse = warehouseMapper.warehouseInDTOToWarehouse(i);
+				
 		WarehouseDTO dto = warehouseMapper.warehouseToWarehouseDTO(warehouseRepository.save(warehouse));
 		
 		setCountryCommonName(dto);
@@ -146,6 +151,40 @@ public class WarehouseServiceImpl implements WarehouseService {
 		
 		return searchDTO;
 	}
+	
+	@Override
+	public WarehouseDTO softDelete(UUID id) {
+		Warehouse warehouse = warehouseRepository.findById(id)
+				.orElseThrow(() -> new ResourceNotFoundException("Warehouse", "id", id));
+		
+		warehouse.setCdUserDelete(auditorAwareImpl.getCurrentAuditor().get());
+		warehouse.setDtRowDelete(LocalDateTime.now());
+		
+		warehouse = warehouseRepository.save(warehouse);
+		
+		return warehouseMapper.warehouseToWarehouseDTO(warehouse);
+		
+	}
+	
+	@Override
+	public WarehouseDTO undoSoftDelete(UUID id) {
+		Warehouse warehouse = warehouseRepository.findById(id)
+				.orElseThrow(() -> new ResourceNotFoundException("Warehouse", "id", id));
+		warehouse.setCdUserDelete(null);
+		warehouse.setDtRowDelete(null);
+		
+		warehouse = warehouseRepository.save(warehouse);
+		
+		return warehouseMapper.warehouseToWarehouseDTO(warehouse);
+	}
+
+	@Override
+	public List<WarehouseDTO> getActiveRecords() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	
 
 	
 	/**
@@ -189,5 +228,6 @@ public class WarehouseServiceImpl implements WarehouseService {
 		return strCommon;
 
 	}
+
 
 }
