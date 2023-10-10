@@ -19,6 +19,7 @@ public interface WarehouseMapper {
     
 	List<WarehouseDTO> warehouseToWarehouseDTO(List<Warehouse> lstWarehouse);
 
+	@Mapping(target = "cca3", source = "cdCountry")
 	Warehouse warehouseInDTOToWarehouse(WarehouseInDTO warehouseInDTO);
 	
 	Warehouse warehouseDTOToWarehouse(WarehouseDTO warehouseDTO);

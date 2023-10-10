@@ -6,6 +6,7 @@ import java.util.UUID;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
@@ -16,19 +17,25 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
-@Data
+@Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString(callSuper = true)
 @Entity
+@EntityListeners(AuditingEntityListener.class)
 @Table(name = "WAREHOUSE")
-public class Warehouse {
+public class Warehouse extends Audit {
 
 	@Id
 	@GeneratedValue(generator = "uuid2")
@@ -52,4 +59,5 @@ public class Warehouse {
 	
 	@Column(name = "cca3", nullable = true, columnDefinition = "VARCHAR(3)")
 	private String cca3;
+
 }

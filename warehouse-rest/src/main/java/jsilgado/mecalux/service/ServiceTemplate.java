@@ -16,5 +16,11 @@ public interface ServiceTemplate<E, I> {
 	void update(E t);
 
 	void delete(UUID id);
+	
+	E softDelete(UUID id);
+	
+	E undoSoftDelete(UUID id);
+
+    List<E> getActiveRecords();
 
 }
