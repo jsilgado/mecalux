@@ -1,6 +1,6 @@
 package jsilgado.mecalux.model.warehouse;
 
-import jsilgado.mecalux.persistence.entity.WarehouseFamilies;
+import jsilgado.mecalux.persistence.entity.enums.WarehouseFamilies;
 
 public class WarehouseFactory {
 

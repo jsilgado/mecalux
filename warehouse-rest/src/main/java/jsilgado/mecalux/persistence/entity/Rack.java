@@ -16,6 +16,7 @@ import javax.persistence.Table;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
 
+import jsilgado.mecalux.persistence.entity.enums.RackTypes;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

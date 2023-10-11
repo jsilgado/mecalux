@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import jsilgado.mecalux.exception.ServiceException;
-import jsilgado.mecalux.persistence.entity.RackTypes;
+import jsilgado.mecalux.persistence.entity.enums.RackTypes;
 
 public class WarehouseEST extends WarehouseModel {
 

@@ -3,6 +3,7 @@ package jsilgado.mecalux.service.impl;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -23,8 +24,8 @@ import jsilgado.mecalux.feign.dto.CountryDTO;
 import jsilgado.mecalux.mapper.WarehouseMapper;
 import jsilgado.mecalux.model.warehouse.WarehouseFactory;
 import jsilgado.mecalux.model.warehouse.WarehouseModel;
-import jsilgado.mecalux.persistence.entity.RackTypes;
 import jsilgado.mecalux.persistence.entity.Warehouse;
+import jsilgado.mecalux.persistence.entity.enums.RackTypes;
 import jsilgado.mecalux.persistence.repository.WarehouseRepository;
 import jsilgado.mecalux.service.WarehouseService;
 import jsilgado.mecalux.service.dto.WarehouseDTO;
@@ -194,7 +195,9 @@ public class WarehouseServiceImpl implements WarehouseService {
 	 * @return
 	 */
 	private void setCountryCommonName(WarehouseDTO dto) {
-	    dto.setDsCountry(getCountryCommonName(dto.getCdCountry()));
+		if (!Objects.isNull(dto)) { 
+			dto.setDsCountry(getCountryCommonName(dto.getCdCountry()));
+		}
 	}
 	
 	

@@ -1,7 +1,8 @@
-package jsilgado.mecalux.persistence.entity;
+package jsilgado.mecalux.persistence.entity.filter;
 
 import io.github.acoboh.query.filter.jpa.annotations.QFDefinitionClass;
 import io.github.acoboh.query.filter.jpa.annotations.QFElement;
+import jsilgado.mecalux.persistence.entity.Warehouse;
 
 @QFDefinitionClass(Warehouse.class)
 public class WarehouseFilterDef {
