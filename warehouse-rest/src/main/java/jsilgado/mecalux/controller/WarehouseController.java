@@ -26,11 +26,13 @@ import org.springframework.web.bind.annotation.RestController;
 import io.github.acoboh.query.filter.jpa.annotations.QFParam;
 import io.github.acoboh.query.filter.jpa.processor.QueryFilter;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import jsilgado.mecalux.exception.ResourceNotFoundException;
 import jsilgado.mecalux.persistence.entity.Warehouse;
-import jsilgado.mecalux.persistence.entity.WarehouseFilterDef;
+import jsilgado.mecalux.persistence.entity.filter.WarehouseFilterDef;
 import jsilgado.mecalux.service.WarehouseService;
 import jsilgado.mecalux.service.dto.WarehouseDTO;
 import jsilgado.mecalux.service.dto.WarehouseInDTO;
@@ -46,6 +48,13 @@ public class WarehouseController {
 	}
 
 	@Operation(summary = "Warehouse create", description = "Creation of a warehouse", tags = { "WarehouseController" })
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "500", description = "Unexpected exception (Internal Server Error)"),
+			@ApiResponse(responseCode = "401", description = "Unauthorized request."),
+			@ApiResponse(responseCode = "404", description = "Resource not found"),
+			@ApiResponse(responseCode = "400", description = "Bad request, review the request param"),
+			@ApiResponse(responseCode = "200", description = "Request Successful, review the resulting object. If infoError is not null, then a functional error has occurred in the back-end "),
+			@ApiResponse(responseCode = "403", description = "Forbidden") })
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@PostMapping
 	public ResponseEntity<WarehouseDTO> create(@Valid @RequestBody WarehouseInDTO warehouseInDTO) {
@@ -57,6 +66,13 @@ public class WarehouseController {
 	}
 
 	@Operation(summary = "Warehouse find all", description = "Gets all warehouses", tags = { "WarehouseController" })
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "500", description = "Unexpected exception (Internal Server Error)"),
+			@ApiResponse(responseCode = "401", description = "Unauthorized request."),
+			@ApiResponse(responseCode = "404", description = "Resource not found"),
+			@ApiResponse(responseCode = "400", description = "Bad request, review the request param"),
+			@ApiResponse(responseCode = "200", description = "Request Successful, review the resulting object. If infoError is not null, then a functional error has occurred in the back-end "),
+			@ApiResponse(responseCode = "403", description = "Forbidden") })
 	@GetMapping
 	public ResponseEntity<List<WarehouseDTO>> findAll() {
 
@@ -66,6 +82,13 @@ public class WarehouseController {
 
 	@Operation(summary = "Warehouse find one", description = "Gets one warehouse by their id", tags = {
 			"WarehouseController" })
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "500", description = "Unexpected exception (Internal Server Error)"),
+			@ApiResponse(responseCode = "401", description = "Unauthorized request."),
+			@ApiResponse(responseCode = "404", description = "Resource not found"),
+			@ApiResponse(responseCode = "400", description = "Bad request, review the request param"),
+			@ApiResponse(responseCode = "200", description = "Request Successful, review the resulting object. If infoError is not null, then a functional error has occurred in the back-end "),
+			@ApiResponse(responseCode = "403", description = "Forbidden") })
 	@GetMapping("/{id}")
 	public ResponseEntity<WarehouseDTO> findById(
 			@Parameter(description = "Warehouse id", required = true, example = "3fa85f64-5717-4562-b3fc-2c963f66afa6", in = ParameterIn.PATH) @PathVariable(value = "id") UUID id) {
@@ -78,6 +101,13 @@ public class WarehouseController {
 
 	@Operation(summary = "Warehouse update one", description = "Update one warehouse by their id", tags = {
 			"WarehouseController" })
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "500", description = "Unexpected exception (Internal Server Error)"),
+			@ApiResponse(responseCode = "401", description = "Unauthorized request."),
+			@ApiResponse(responseCode = "404", description = "Resource not found"),
+			@ApiResponse(responseCode = "400", description = "Bad request, review the request param"),
+			@ApiResponse(responseCode = "200", description = "Request Successful, review the resulting object. If infoError is not null, then a functional error has occurred in the back-end "),
+			@ApiResponse(responseCode = "403", description = "Forbidden") })
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@PutMapping("/{id}")
 	public ResponseEntity<WarehouseDTO> update(@PathVariable(value = "id") UUID id,
@@ -97,6 +127,13 @@ public class WarehouseController {
 
 	@Operation(summary = "Delete warehouse", description = "Delete an exists warehouse and their racks", tags = {
 			"WarehouseController" })
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "500", description = "Unexpected exception (Internal Server Error)"),
+			@ApiResponse(responseCode = "401", description = "Unauthorized request."),
+			@ApiResponse(responseCode = "404", description = "Resource not found"),
+			@ApiResponse(responseCode = "400", description = "Bad request, review the request param"),
+			@ApiResponse(responseCode = "200", description = "Request Successful, review the resulting object. If infoError is not null, then a functional error has occurred in the back-end "),
+			@ApiResponse(responseCode = "403", description = "Forbidden") })
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> delete(
@@ -111,6 +148,13 @@ public class WarehouseController {
 	
 	@Operation(summary = "Delete Soft warehouse", description = "Delete Soft an exists warehouse and their racks", tags = {
 	"WarehouseController" })
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "500", description = "Unexpected exception (Internal Server Error)"),
+			@ApiResponse(responseCode = "401", description = "Unauthorized request."),
+			@ApiResponse(responseCode = "404", description = "Resource not found"),
+			@ApiResponse(responseCode = "400", description = "Bad request, review the request param"),
+			@ApiResponse(responseCode = "200", description = "Request Successful, review the resulting object. If infoError is not null, then a functional error has occurred in the back-end "),
+			@ApiResponse(responseCode = "403", description = "Forbidden") })
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@DeleteMapping("/{id}/soft-delete")
 	public ResponseEntity<WarehouseDTO> softDelete(
@@ -123,6 +167,13 @@ public class WarehouseController {
 	
 	@Operation(summary = "Undo Delete Soft warehouse", description = "Undo Delete Soft an exists warehouse and their racks", tags = {
 	"WarehouseController" })
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "500", description = "Unexpected exception (Internal Server Error)"),
+			@ApiResponse(responseCode = "401", description = "Unauthorized request."),
+			@ApiResponse(responseCode = "404", description = "Resource not found"),
+			@ApiResponse(responseCode = "400", description = "Bad request, review the request param"),
+			@ApiResponse(responseCode = "200", description = "Request Successful, review the resulting object. If infoError is not null, then a functional error has occurred in the back-end "),
+			@ApiResponse(responseCode = "403", description = "Forbidden") })
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@PatchMapping("/{id}/undo-soft-delete")
 	public ResponseEntity<WarehouseDTO> undoSoftDelete(
@@ -138,6 +189,13 @@ public class WarehouseController {
 
 	@Operation(summary = "Warehouse racks permutations", description = "Calculates the possible permutations of racking types in a warehouse based on the warehouse family", tags = {
 			"WarehouseController" })
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "500", description = "Unexpected exception (Internal Server Error)"),
+			@ApiResponse(responseCode = "401", description = "Unauthorized request."),
+			@ApiResponse(responseCode = "404", description = "Resource not found"),
+			@ApiResponse(responseCode = "400", description = "Bad request, review the request param"),
+			@ApiResponse(responseCode = "200", description = "Request Successful, review the resulting object. If infoError is not null, then a functional error has occurred in the back-end "),
+			@ApiResponse(responseCode = "403", description = "Forbidden") })
 	@GetMapping("/rackspermutations/{id}")
 	public ResponseEntity<List<String>> racksPermutations(@PathVariable(value = "id") UUID id) {
 
@@ -146,6 +204,13 @@ public class WarehouseController {
 
 	@Operation(summary = "Search warehouses", description = "Search with paging of warehouses", tags = {
 	"WarehouseController" })
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "500", description = "Unexpected exception (Internal Server Error)"),
+			@ApiResponse(responseCode = "401", description = "Unauthorized request."),
+			@ApiResponse(responseCode = "404", description = "Resource not found"),
+			@ApiResponse(responseCode = "400", description = "Bad request, review the request param"),
+			@ApiResponse(responseCode = "200", description = "Request Successful, review the resulting object. If infoError is not null, then a functional error has occurred in the back-end "),
+			@ApiResponse(responseCode = "403", description = "Forbidden") })
 	@GetMapping("/search")
 	public Page<WarehouseDTO> search(@RequestParam(name = "page", defaultValue = "0") int page,
 			@RequestParam(name = "size", defaultValue = "10") int size,

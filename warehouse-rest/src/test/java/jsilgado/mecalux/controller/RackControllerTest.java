@@ -15,6 +15,7 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.test.context.support.WithMockUser;
@@ -24,7 +25,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import jsilgado.mecalux.exception.ResourceNotFoundException;
 import jsilgado.mecalux.exception.ServiceException;
-import jsilgado.mecalux.persistence.entity.RackTypes;
+import jsilgado.mecalux.persistence.entity.enums.RackTypes;
 import jsilgado.mecalux.security.JwtAuthenticationEntryPoint;
 import jsilgado.mecalux.security.JwtTokenProvider;
 import jsilgado.mecalux.service.RackService;
@@ -35,6 +36,7 @@ import jsilgado.mecalux.service.dto.RackInDTO;
  * Test RackController
  */
 @WebMvcTest(RackController.class)
+@MockBean(JpaMetamodelMappingContext.class)
 @WithMockUser(username = "Admon", roles = { "ADMIN" })
 class RackControllerTest {
 

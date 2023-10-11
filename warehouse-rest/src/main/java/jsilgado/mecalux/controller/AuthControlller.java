@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jsilgado.mecalux.persistence.entity.User;
 import jsilgado.mecalux.security.JwtAuthResponseDTO;
 import jsilgado.mecalux.security.JwtTokenProvider;
@@ -39,6 +41,13 @@ public class AuthControlller {
 
 	@Operation(summary = "Login", description = "Check if the username and password are valid. Return token", tags = {
 			"AuthControlller" })
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "500", description = "Unexpected exception (Internal Server Error)"),
+			@ApiResponse(responseCode = "401", description = "Unauthorized request."),
+			@ApiResponse(responseCode = "404", description = "Resource not found"),
+			@ApiResponse(responseCode = "400", description = "Bad request, review the request param"),
+			@ApiResponse(responseCode = "200", description = "Request Successful, review the resulting object. If infoError is not null, then a functional error has occurred in the back-end "),
+			@ApiResponse(responseCode = "403", description = "Forbidden") })
 	@PostMapping("/login")
 	public ResponseEntity<JwtAuthResponseDTO> authenticateUser(@Valid @RequestBody LoginDTO loginDTO) {
 
@@ -58,6 +67,13 @@ public class AuthControlller {
 
 	@Operation(summary = "Current user", description = "Get the current user data", tags = {
 	"AuthControlller" })
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "500", description = "Unexpected exception (Internal Server Error)"),
+			@ApiResponse(responseCode = "401", description = "Unauthorized request."),
+			@ApiResponse(responseCode = "404", description = "Resource not found"),
+			@ApiResponse(responseCode = "400", description = "Bad request, review the request param"),
+			@ApiResponse(responseCode = "200", description = "Request Successful, review the resulting object. If infoError is not null, then a functional error has occurred in the back-end "),
+			@ApiResponse(responseCode = "403", description = "Forbidden") })
 	@GetMapping("/current-user")
 	public User getCurrentUser(Principal principal) {
 		return (User) userDetailsService.loadUserByUsername(principal.getName());

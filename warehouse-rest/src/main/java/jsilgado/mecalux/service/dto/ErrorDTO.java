@@ -1,7 +1,9 @@
 package jsilgado.mecalux.service.dto;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -12,11 +14,12 @@ import lombok.ToString;
 @ToString(callSuper = true)
 public class ErrorDTO {
 
-	private Date date;
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd hh:mm:ss")
+	private LocalDateTime date;
 	private List<String> message;
 	private String detail;
 
-	public ErrorDTO(Date date, List<String> message, String detail) {
+	public ErrorDTO(LocalDateTime date, List<String> message, String detail) {
 		super();
 		this.date = date;
 		this.message = message;

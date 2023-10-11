@@ -22,7 +22,7 @@ import jsilgado.mecalux.feign.CountryClient;
 import jsilgado.mecalux.feign.dto.CountryDTO;
 import jsilgado.mecalux.mapper.WarehouseMapper;
 import jsilgado.mecalux.persistence.entity.Warehouse;
-import jsilgado.mecalux.persistence.entity.WarehouseFamilies;
+import jsilgado.mecalux.persistence.entity.enums.WarehouseFamilies;
 import jsilgado.mecalux.persistence.repository.WarehouseRepository;
 import jsilgado.mecalux.service.dto.WarehouseDTO;
 import jsilgado.mecalux.service.dto.WarehouseInDTO;
@@ -120,6 +120,8 @@ class WarehouseServiceTest {
     void create_Ok() {
 
     	when(warehouseRepository.save(Mockito.any(Warehouse.class))).thenReturn(warehouse);
+    	
+    	when(warehouseMapper.warehouseInDTOToWarehouse(warehouseInDTO)).thenReturn(warehouse);
     	
     	when(warehouseMapper.warehouseToWarehouseDTO(warehouse)).thenReturn(warehouseDTO);
 

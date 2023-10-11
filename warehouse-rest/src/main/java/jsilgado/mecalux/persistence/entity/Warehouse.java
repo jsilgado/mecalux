@@ -19,6 +19,7 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import jsilgado.mecalux.persistence.entity.enums.WarehouseFamilies;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

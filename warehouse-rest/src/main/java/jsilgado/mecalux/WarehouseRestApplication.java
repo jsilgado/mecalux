@@ -8,7 +8,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 
 import io.github.acoboh.query.filter.jpa.annotations.EnableQueryFilter;
 import jsilgado.mecalux.controller.WarehouseController;
-import jsilgado.mecalux.persistence.entity.WarehouseFilterDef;
+import jsilgado.mecalux.persistence.entity.filter.WarehouseFilterDef;
 
 @EnableFeignClients
 @EnableCaching

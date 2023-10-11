@@ -11,19 +11,24 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.TestPropertySource;
 
 import jsilgado.mecalux.persistence.entity.Rack;
-import jsilgado.mecalux.persistence.entity.RackTypes;
 import jsilgado.mecalux.persistence.entity.Warehouse;
-import jsilgado.mecalux.persistence.entity.WarehouseFamilies;
+import jsilgado.mecalux.persistence.entity.enums.RackTypes;
+import jsilgado.mecalux.persistence.entity.enums.WarehouseFamilies;
 import net.datafaker.Faker;
 
 /**
  * Test RackRepositoryTest
  */
 @DataJpaTest
+@MockBean(JpaMetamodelMappingContext.class)
 @TestPropertySource(locations = "classpath:test.properties")
+@WithMockUser(username = "Admon", roles = { "ADMIN" })
 @AutoConfigureTestDatabase(replace = Replace.NONE)
 class RackRepositoryTest {
 

@@ -2,7 +2,7 @@ package jsilgado.mecalux.model.warehouse;
 
 import java.util.List;
 
-import jsilgado.mecalux.persistence.entity.RackTypes;
+import jsilgado.mecalux.persistence.entity.enums.RackTypes;
 
 public abstract class WarehouseModel {
 

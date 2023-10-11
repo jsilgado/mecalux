@@ -2,9 +2,9 @@ package jsilgado.mecalux.exception;
 
 import static java.lang.String.format;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -97,7 +97,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
 		});
 
-		ErrorDTO errorDTO = new ErrorDTO(new Date(), errors, webRequest.getDescription(false));
+		ErrorDTO errorDTO = new ErrorDTO(LocalDateTime.now(), errors, webRequest.getDescription(false));
 
 		return new ResponseEntity<>(errorDTO, HttpStatus.BAD_REQUEST);
 	}
@@ -110,7 +110,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_JSON);
 
-		ErrorDTO error = new ErrorDTO(new Date(), errorMessages, details);
+		ErrorDTO error = new ErrorDTO(LocalDateTime.now(), errorMessages, details);
 		
 		log.error(error.toString());
 
