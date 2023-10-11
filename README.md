@@ -1,12 +1,3 @@
-<style>
-.fila-imagenes {
-  display: flex;
-  justify-content: space-between;
-  margin-left: 10px;
-  margin-right: 10px;
-}
-</style>
-
 # Mecalux - Warehouses and Racks
 <p align="center">
   <img src="https://img.shields.io/badge/Java-17-blue">
@@ -48,6 +39,10 @@ It is a technical test on SpringBoot java that started with the basic concepts a
 ### Query JPA Filters. -> **[https://github.com/acoboh/query-filter-jpa/wiki](https://github.com/acoboh/query-filter-jpa/wiki)**
 > The QueryFilterJPA Library adds the possibility of creating custom filters with RHS Colon and LHS Brackets with Spring JPA easily. This library is useful for allowing the user to obtain data according to their requirements in an easy way for the programmer. With just a few small configuration classes, users will have the ability to create filters with infinite possibilities.
 [Quick Guide](docs/QueryFilterJPA.md)
+
+### Auditing with Spring Data annotations
+> Audit some fields of our table using only annotations.
+[Quick Guide](docs/Audit.md)
 
 ### **Test Containers** **[Test Cointainers]**
 [Quick Guide](docs/TestContainer.md)
