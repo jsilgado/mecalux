@@ -27,29 +27,36 @@ It is a technical test on SpringBoot java that started with the basic concepts a
 <img src="https://github.com/jsilgado/mecalux/blob/master/docs/images/OpenApi.png" alt="OpenApi" width="80" height="80">
 
 > OpenAPI is a standard specification for describing RESTful APIs. It allows both humans and machines to discover the capabilities of an API without the need to read documentation or understand the implementation.
-[Quick Guide](docs/OpenApis.md)
+[Quick Guide](https://github.com/jsilgado/mecalux/blob/master/docs/Audit.md)
 
 
 ### Flyway. -> **[documentation.red-gate.com (Quick start Maven) ](https://documentation.red-gate.com/fd/quickstart-maven-184127578.html)**
 <img src="https://github.com/jsilgado/mecalux/blob/master/docs/images/Flyway.jpg" alt="OpenApi" width="80" height="80" align="center">
 
 > Flyway is a database migration tool that uses SQL scripts to apply changes to a database. Flyway is an open source tool and is available for a wide range of relational databases, including MySQL, PostgreSQL, Oracle, SQL Server and MariaDB..
-[Quick Guide](docs/Flyway.md)
+[Quick Guide]([docs/Flyway.md](https://github.com/jsilgado/mecalux/blob/master/docs/Flywayt.md))
 
 ### Query JPA Filters. -> **[https://github.com/acoboh/query-filter-jpa/wiki](https://github.com/acoboh/query-filter-jpa/wiki)**
 > The QueryFilterJPA Library adds the possibility of creating custom filters with RHS Colon and LHS Brackets with Spring JPA easily. This library is useful for allowing the user to obtain data according to their requirements in an easy way for the programmer. With just a few small configuration classes, users will have the ability to create filters with infinite possibilities.
-[Quick Guide](docs/QueryFilterJPA.md)
+[Quick Guide](https://github.com/jsilgado/mecalux/blob/master/QueryFilterJPA.md)
+
+## :classical_building: Patterns and architecture
 
 ### Auditing with Spring Data annotations
 > Audit some fields of our table using only annotations.
-[Quick Guide](docs/Audit.md)
+[Quick Guide](https://github.com/jsilgado/mecalux/blob/master/Audit.md)
+
+### Java Supplier Interface
+> The Java Supplier interface belongs to the java.util.function package and was introduced in Java 8 in order to implement functional programming with Java. It represents a function to which no arguments are passed and which returns a generic value T.
+
+
+## :test_tube: Testing
 
 ### **Test Containers** **[Test Cointainers]**
-[Quick Guide](docs/TestContainer.md)
+:construction:
 
 
 ## :computer: Building and running Mecalux locally
-
 Building and running Mecalux in your local dev environment is very easy. Be sure you have Git, Node.js, Docker and Maven installed, then follow the directions below. 
 
 ### postgres
